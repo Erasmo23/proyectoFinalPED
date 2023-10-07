@@ -1,0 +1,270 @@
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/basic-layout}">
+<head>
+    <title>Bienvenido/a</title>
+    
+</head>
+
+<body>
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+
+        <div class="header">
+            <h1 class="header-title">
+                Bienvenido, [[${#authentication.getPrincipal().getNombreCompleto()}]]
+            </h1>
+            <p class="header-subtitle" >
+            	<script type="text/javascript">
+	            	var currLang = /*[[${#locale.language}]]*/'ES';
+	             	const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+	             	document.write(new Date(Date.now()).toLocaleString(currLang, options));
+            	</script>
+            </p>
+        </div>
+        
+        <!-- AGENTE -->
+        <th:block sec:authorize="hasAnyAuthority('AGENTE')">
+	        <div class="row">
+	            <div class="col-xl-12 col-xxl-12 d-flex">
+	                <div class="w-100">
+	                    <div class="row">
+	                        <div class="col-sm-4">
+	                            <div class="card">
+	                                <div class="card-body">
+	                                    <div class="row">
+	                                        <div class="col mt-0">
+	                                            <h5 class="card-title">Llamadas Atendidas Hoy</h5>
+	                                        </div>
+	
+	                                        <div class="col-auto">
+	                                            <div class="avatar">
+	                                                <div class="avatar-title rounded-circle bg-primary-dark">
+	                                                    <i class="align-middle" data-feather="phone-incoming"></i>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${contCallToday}"></h1>
+	                                    <div class="mb-0">
+	                                        <span class="text-danger"> <i
+	                                                class="mdi mdi-arrow-bottom-right"></i> Total de las Llamadas Atendidas Hoy </span>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="col-sm-4">
+	                            <div class="card">
+	                                <div class="card-body">
+	                                    <div class="row">
+	                                        <div class="col mt-0">
+	                                            <h5 class="card-title">Consulta</h5>
+	                                        </div>
+	
+	                                        <div class="col-auto">
+	                                            <div class="avatar">
+	                                                <div class="avatar-title rounded-circle bg-primary-dark">
+	                                                    <i class="align-middle fas fa-question"></i>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${contCallTodayCon}"></h1>
+	                                    <div class="mb-0">
+	                                        <span class="text-success"> <i
+	                                                class="mdi mdi-arrow-bottom-right"></i> Tipo de Tr&aacute;mite: Consulta </span>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="col-sm-4">
+	                            <div class="card">
+	                                <div class="card-body">
+	                                    <div class="row">
+	                                        <div class="col mt-0">
+	                                            <h5 class="card-title">Operativo</h5>
+	                                        </div>
+	
+	                                        <div class="col-auto">
+	                                            <div class="avatar">
+	                                                <div class="avatar-title rounded-circle bg-primary-dark">
+	                                                    <i class="align-middle" data-feather="tool"></i>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${contCallTodayOpe}"></h1>
+	                                    <div class="mb-0">
+	                                        <span class="text-success"> <i
+	                                                class="mdi mdi-arrow-bottom-right" ></i> Tipo de Tr&aacute;mite: Operativo </span>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	   	</th:block>
+	   	
+	   	<!-- TECNICO -->
+	   	<th:block sec:authorize="hasAnyAuthority('TECNICO')">
+	        <div class="row">
+	            <div class="col-xl-12 col-xxl-12 d-flex">
+	                <div class="w-100">
+	                    <div class="row">
+	                        <div class="col-sm-4">
+	                            <div class="card">
+	                                <div class="card-body">
+	                                    <div class="row">
+	                                        <div class="col mt-0">
+	                                            <h5 class="card-title">&Oacute;rdenes Asignadas</h5>
+	                                        </div>
+	
+	                                        <div class="col-auto">
+	                                            <div class="avatar">
+	                                                <div class="avatar-title rounded-circle bg-primary-dark">
+	                                                    <i class="align-middle" data-feather="layers"></i>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${contAsignadas}"></h1>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="col-sm-4">
+	                            <div class="card">
+	                                <div class="card-body">
+	                                    <div class="row">
+	                                        <div class="col mt-0">
+	                                            <h5 class="card-title">&Oacute;rdenes en Ejecuci&oacute;n</h5>
+	                                        </div>
+	
+	                                        <div class="col-auto">
+	                                            <div class="avatar">
+	                                                <div class="avatar-title rounded-circle bg-primary-dark">
+	                                                    <i class="align-middle" data-feather="play"></i>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${countEnEjecucion}"></h1>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="col-sm-4">
+	                            <div class="card">
+	                                <div class="card-body">
+	                                    <div class="row">
+	                                        <div class="col mt-0">
+	                                            <h5 class="card-title">&Oacute;rdenes en Pausa</h5>
+	                                        </div>
+	
+	                                        <div class="col-auto">
+	                                            <div class="avatar">
+	                                                <div class="avatar-title rounded-circle bg-primary-dark">
+	                                                    <i class="align-middle" data-feather="pause"></i>
+	                                                </div>
+	                                                 
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${countEnEspera}"></h1>
+	                                   
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	   	</th:block>
+	   	
+	   	<!-- BACK OFFICE -->
+	   	<th:block sec:authorize="hasAnyAuthority('BACK_OFFICE')">
+	        <div class="row">
+	            <div class="col-xl-12 col-xxl-12 d-flex">
+	                <div class="w-100">
+	                    <div class="row">
+	                        <div class="col-sm-4">
+	                            <div class="card">
+	                                <div class="card-body">
+	                                    <div class="row">
+	                                        <div class="col mt-0">
+	                                            <h5 class="card-title">Solicitudes Pendientes</h5>
+	                                        </div>
+	
+	                                        <div class="col-auto">
+	                                            <div class="avatar">
+	                                                <div class="avatar-title rounded-circle bg-primary-dark">
+	                                                    <i class="align-middle" data-feather="trello"></i>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${contPendientesPortal}"></h1>
+	                                    <div class="mb-0">
+	                                        <span class="text-success"> <i
+	                                                class="mdi mdi-arrow-bottom-right"></i> Solicitudes Pendientes de Asignar (Aprobar/Rechazar) ingresadas desde el Portal Web </span>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="col-sm-4">
+	                            <div class="card">
+	                                <div class="card-body">
+	                                    <div class="row">
+	                                        <div class="col mt-0">
+	                                            <h5 class="card-title">Solicitudes Aprobadas</h5>
+	                                        </div>
+	
+	                                        <div class="col-auto">
+	                                            <div class="avatar">
+	                                                <div class="avatar-title rounded-circle bg-primary-dark">
+	                                                    <i class="align-middle" data-feather="user-check"></i>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${countAprobadasTodayPortal}"></h1>
+	                                    <div class="mb-0">
+	                                        <span class="text-success"> <i
+	                                                class="mdi mdi-arrow-bottom-right"></i> Solicitudes Ingresadas desde el Portal Web Aprobadas Hoy </span>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="col-sm-4">
+	                            <div class="card">
+	                                <div class="card-body">
+	                                    <div class="row">
+	                                        <div class="col mt-0">
+	                                            <h5 class="card-title">Solicitudes Disponibles Evaluaci&oacute;n</h5>
+	                                        </div>
+	
+	                                        <div class="col-auto">
+	                                            <div class="avatar">
+	                                                <div class="avatar-title rounded-circle bg-primary-dark">
+	                                                    <i class="align-middle" data-feather="phone-outgoing"></i>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${countDisponiblesEvaluacion}"></h1>
+	                                    <div class="mb-0">
+	                                        <span class="text-success"> <i
+	                                                class="mdi mdi-arrow-bottom-right" ></i> Solicitudes Disponibles para Realizar Evalua&oacute;n </span>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	   	</th:block>
+        
+      
+ </th:block>
+
+</body>

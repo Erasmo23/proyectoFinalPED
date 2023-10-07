@@ -1,0 +1,194 @@
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/unwrap-layout}">
+    <head>
+        <title>Login</title>
+    </head>
+
+    <body>
+    <th:block layout:fragment="content">
+        <main class="main h-100 w-100">
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+                        <div class="d-table-cell align-middle">
+
+                            <div class="text-center mt-4">
+                                <img th:src="@{/img/logos/portada.png}" alt="ANDA texto" class="img-fluid"/>
+                                <p class="lead">
+                                    Ingresa a tu cuenta
+                                </p>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="m-sm-4">
+                                        <div class="text-center">
+                                            <img th:src="@{/img/logos/logo.png}" alt="ANDA"
+                                                 class="img-fluid rounded-circle" width="132" height="132"/>
+                                        </div>
+
+                                        <div th:if="${param.error != null and session[SPRING_SECURITY_LAST_EXCEPTION] != null and session[SPRING_SECURITY_LAST_EXCEPTION].message != null}" class="alert alert-danger alert-dismissible" role="alert">
+                                            <div class="alert-message">
+                                                <strong th:text="${session[SPRING_SECURITY_LAST_EXCEPTION].message}"></strong>
+                                            </div>
+
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                        <div th:if="${param.logout != null}" class="alert alert-info alert-dismissible" role="alert">
+                                            <div class="alert-message">
+                                                <strong>[[#{login.session.close}]]</strong>
+                                            </div>
+
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                        <form th:action="@{/login}" method="post">
+                                            <div class="mb-3">
+                                                <label>Correo Electr&oacute;nico</label>
+                                                <input class="form-control form-control-lg" type="text" name="username"
+                                                       placeholder="Ingresa tu usuario"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label>Contrase&ntilde;a</label>
+                                                <input class="form-control form-control-lg" type="password" name="password"
+                                                       placeholder="Ingresa tu contrase&ntilde;a"/>
+                                                <small>
+                                                    <a href="javascript:void(0)" onclick="mostrarFormResetPassword();">¿Olvidó la Contrase&ntilde;a?</a>
+                                                </small>
+                                            </div>
+                                            <div>
+                                                <div class="form-check align-items-center">
+                                                    <input id="customControlInline" type="checkbox" class="form-check-input"
+                                                           value="remember-me" name="remember-me"
+                                                           checked>
+                                                    <label class="form-check-label text-small" for="customControlInline">Recordarme</label>
+                                                </div>
+                                            </div>
+                                            <div class="text-center mt-3">
+                                                <button type="submit" class="btn btn-lg btn-primary">Ingresar</button>
+                                                
+                                                <a class="btn btn-lg btn-primary" 
+                                                		th:href="@{/nuevousuario/form}" th:inline="text" >
+						                            <i class="fa fa-plus-circle pr-1"></i> Crear Cuenta
+						                        </a>
+                                                <!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal de reseteo de password -->
+        <div id="modalResetPassword" class="modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none; ">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Recuperación de contraseña</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="frmResetPassword" class="needs-validation form-horizontal needs-validation-manual" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-1">
+                                    <i class="fas fa-exclamation-circle fa-2x" style="color: orange;"></i>
+                                </div>
+                                <div class="col-lg-11">
+                                    <label>Estimado usuario, ingrese sus datos para proceder con el reestablecimiento de la contraseña.</label>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-4">
+                                <div class="col-lg-4">
+                                    <label>Usuario:</label>
+                                </div>
+                                <div class="col-lg-8 col-sm-8">
+                                    <input type="text" id="stCodigoUsuario" name="stCodigoUsuario" style="width: 100%;" required />
+                                </div>
+                            </div>
+                            <div class="form-group row mt-4">
+                                <div class="col-lg-4">
+                                    <label>Correo electrónico:</label>
+                                </div>
+                                <div class="col-lg-8 col-sm-8">
+                                    <input type="text" id="stCorreoRecuperacion" class="emails" name="stCorreoRecuperacion" style="width: 100%;" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style='justify-content: center;'>
+                            <button id="btnEnviarResetPassword" type="submit" class="btn btn-info waves-effect waves-light text-center text-white">Validar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </th:block>
+    <th:block layout:fragment="js">
+        <script th:inline="javascript">
+            const urlResetPassword = /*[[@{/password/reset/crear}]]*/"";
+        </script>
+        <script>
+            $(function () {
+                // se llama al cargar por si el usuario tiene informacion guardada en el navegador
+                onCambioBoton();
+
+                $(".emails").inputmask("email");
+            });
+
+            function onCambioBoton() {
+                if ($("#username").val() && $("#password").val()) {
+                    $("#botonSubmit").attr("disabled", false);
+                } else {
+                    $("#botonSubmit").attr("disabled", true);
+                }
+            }
+
+            function mostrarFormResetPassword() {
+                habilitarResetPassword();
+                $("#modalResetPassword").modal("toggle");
+            }
+
+            function habilitarResetPassword() {
+                $("#btnEnviarResetPassword").prop("disabled", false);
+            }
+
+            function deshabilitarResetPassword() {
+                $("#btnEnviarResetPassword").prop("disabled", true);
+            }
+
+            function crearResetPassword() {
+                var peticionData = new PeticionData($("#frmResetPassword").serialize(), urlResetPassword, "POST");
+                peticionData.procesarPeticionAjax(function (resultado) {
+                    if (resultado.success) {
+                        Swal.fire({title: "Correo electrónico enviado", text: "El correo electrónico fue enviado de forma exitosa, "
+                                    + " siga las instrucciones para restablecer su contraseña."
+                                    + " Revise la carpeta de spam o correo no deseado en caso de no encontrar el correo electrónico."
+                            , type: 'success'
+                            , confirmButtonText: 'Aceptar'
+                        });
+                        $("#modalResetPassword").modal("toggle");
+                    }
+                });
+            }
+
+            /* Submit validation, antes de ejecutar la funcion de guardado ajaxSave() */
+            $("#frmResetPassword").submit(function (event) {
+                // cancels the form submission
+                var formulario = $('#frmResetPassword');
+                event.preventDefault();
+                event.stopPropagation();
+
+                var validacionBootstrapCorrecta = formulario[0].checkValidity();
+                var validacionManualCorrecta = Validador.validarFormulario(formulario);
+                if (validacionBootstrapCorrecta && validacionManualCorrecta) {
+                    crearResetPassword();
+                }
+                formulario.addClass('was-validated');
+            });
+        </script>
+    </th:block>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Proyecto de call center Anda donado por USAID DRM">
+<meta name="author" content="Bootlab">
+<!-- CSRF Token -->
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+<link rel="icon" type="image/x-icon" th:href="@{/img/logos/icono.ico}">
+
+<!-- 
+    Seguridad de etiqueta CSP 
+    Esta seguridad limita de donde se puede traer contenido de todo tipo que el navegador enfuerza.
+    Para mayor informacion ver el siguiente enlace:
+
+        https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self';
+        script-src 'self' 'unsafe-inline' https://maps.googleapis.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://indestructibletype.com;
+        font-src 'self' data: https://fonts.googleapis.com https://indestructibletype.com https://fonts.gstatic.com;
+        img-src 'self' data: https://maps.googleapis.com https://maps.gstatic.com;
+        connect-src 'self' https://maps.googleapis.com;
+        " />

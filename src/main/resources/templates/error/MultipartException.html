@@ -1,0 +1,37 @@
+<!--decorated page-->
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+    layout:decorate="~{layouts/unwrap-layout}">
+
+
+<head>
+
+    <title>400</title>
+
+</head>
+
+<body>
+    <section layout:fragment="content" th:remove="tag">
+
+        <!-- ============================================================== -->
+        <!-- Login box.scss -->
+        <!-- ============================================================== -->
+        <div class="error-box">
+            <div class="error-body text-center">
+                <h1 class="error-title">El/Los archivos a subir exedieron el tamaos</h1>
+                <h3 class="text-uppercase error-subtitle">El archivo no puede pesar mas de 50MB o no se puede subir varios archivos que pesen mas de 100MB</h3>
+                <a th:href="@{/}"  class="btn btn-info btn-rounded waves-effect waves-light m-b-40">Back to home</a> </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- Login box.scss -->
+        <!-- ============================================================== -->
+    </section>
+    <section layout:fragment="js" th:remove="tag">
+        <script>
+
+            $(".preloader").fadeOut();
+
+        </script>
+    </section>
+</body>
+
+</html>

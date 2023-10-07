@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Ejemplo de envío de correos electrónicos con plantillas Thymeleaf</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    <style>
+		.column {
+		  float: left;
+		  width: 33.33%;
+		  padding: 5px;
+		}
+		
+    </style>
+    
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div style="display: inline-block; width: 45%;vertical-align: middle;" >
+				<p><img src="gobiernoSV.png" th:src="|cid:${logoGobSv}|" style="width:60px;height:70px;"/></p>
+			</div>
+			<div style="display: inline-block; width: 30%; text-align: right;vertical-align: middle;">
+				<p><img src="logoAnda.png" th:src="|cid:${logoAnda}|" style="width:150px;height:50px;vertical-align: middle;"/></p>
+			</div>
+		</div>
+		<div class="row">
+			Estimado(a) [[${solicitud.stNombreContacto}]],
+		</div>
+		<br>
+		<div class="row">
+			Por este medio se le notifica que la gestión ingresada [[${mensajeConSinCuenta}]]
+		</div>
+		<div>
+			Recuerde consultar sus gestiones en nuestro portal web, Call Center 915 o 
+			<a href="https://api.whatsapp.com/send/?phone=%2B50378381462&text&type=phone_number&app_absent=0">Gotita WhatsApp</a> (7838-1462).
+		</div>
+	</div>
+</body>
+</html>

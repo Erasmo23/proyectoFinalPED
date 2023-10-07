@@ -1,0 +1,304 @@
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/unwrap-layout}">
+<head>
+    <title>Nuevo Usuario</title>
+    <style type="text/css">label.error{color:red !important;}</style>
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+<div class="container-fluid">
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+					<h3 class="text-body">Crear Usuario</h3>
+					<hr class="m-t-0">
+				</div>
+				
+                <form id="formNuevoUsuario" enctype="multipart/form-data" class="needs-validation needs-validation-manual form-horizontal" novalidate th:action="@{/nuevousuario/save}" th:object="${nuevoUsuarioDTO}" method="POST">
+                    
+                    <ul th:if="${#fields.hasErrors('global')}">
+                        <li th:each="err : ${#fields.errors('global')}" th:text="${err}"></li>
+                    </ul>
+                    
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-12">
+                            	
+                            	<div class="form-group row mb-3">
+                                    <label for="nombres" class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Nombres</label>
+                                    <div class="col-xs-12 col-sm-10 col-md-10">
+                                        <input type="text" class="form-control" id="nombres"
+                                                    th:field="*{nombres}" placeholder="Nombres" 
+                                                    maxlength="100"  required>
+                                        <div th:errors="*{nombres}" style="color: red;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row mb-3">
+                                    <label for="apellidos" class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Apellidos</label>
+                                    <div class="col-xs-12 col-sm-10 col-md-10">
+                                        <input type="text" class="form-control" id="apellidos"
+                                                    th:field="*{apellidos}" placeholder="Apellidos" 
+                                                    maxlength="100"  required>
+                                        <div th:errors="*{apellidos}" style="color: red;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row mb-3">
+									<label for="correo" class="col-sm-2 text-right control-label col-form-label">Correo Electr&oacute;nico</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="correo" th:field="*{correo}" placeholder="Correo Electr&oacute;nico" >
+									</div>
+								</div>
+                                
+                                <div class="form-group row mb-3">
+                                    <label for="password" class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Contraseña</label>
+                                    <div class="col-xs-12 col-sm-10 col-md-10">
+                                        <input type="password" class="form-control" id="password"
+                                                    th:field="*{password}" maxlength="100"  required>
+                                        <div th:errors="*{password}" style="color: red;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row mb-3">
+                                    <label for="passwordConfirm" class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Confirmar Contraseña</label>
+                                    <div class="col-xs-12 col-sm-10 col-md-10">
+                                        <input type="password" class="form-control" id="passwordConfirm"
+                                                    th:field="*{passwordConfirm}" maxlength="100"  required>
+                                        <div th:errors="*{passwordConfirm}" style="color: red;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row mb-3">
+                                    <label for="" class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Foto de Perfil</label>
+                                    <div class="col-xs-12 col-sm-10 col-md-10">
+                                    	<input type="file" name="foto" class="custom-file-input" id="foto" multiple accept=".jpg, .jpeg, .png" />
+                                    	<div th:uerrors="*{foto}" style="color: red;"></div>
+                                    	<h6 class="text-end">*Archivos admitidos: .png, .jpg, .jpeg</h6>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group m-b-0 text-center">
+                            <button type="button" class="btn btn-info waves-effect waves-light" th:text="'Crear Usuario'" id="btnGuardar"></button>
+                            
+                            <a class="btn btn waves-effect waves-light btn-block btn-danger" th:href="@{/login}" th:inline="text">
+	                            Cancelar
+	                        </a>
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<section layout:fragment="js" th:remove="tag">
+    <script th:inline="javascript">
+		
+		const urlSaveNuevoUsuario =  /*[[@{/nuevousuario/save}]]*/"";
+    	const urlLogin = /*[[@{/login}]]*/"";
+
+    $.validator.addMethod(
+	  "correoPersonalizado",
+	  function(value, element) {
+	    return this.optional(element) || /[a-zA-Z0-9._%-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,5}/g.test(value);
+	  },
+	  "Por favor ingrese una direcci&oacute;n de correo electr&oacute;nico v&aacute;lida."
+	);
+    
+    $("#formNuevoUsuario").validate({
+		errorClass: "is-invalid error",
+        validClass: "is-valid",
+		rules: {
+			nombres: {maxlength: 100, minlength:3,required:true},
+			apellidos :{maxlength: 100, minlength:3,required:true},
+			correo:{correoPersonalizado:true,maxlength:100},
+			password: {maxlength: 100, minlength:3,required:true},
+			passwordConfirm: {maxlength: 100, minlength:3,required:true}
+			//'files[]': {accept:'jpg,jpeg,png,mp4,webm'}
+	    },
+	    messages: {
+	    	nombres: { maxlength: $.validator.format( "Por favor no ingrese m&aacute;s de {0} caracteres." ), minlength: $.validator.format( "Ingrese al menos {0} caracteres." ),required: "Campo obligatorio."},
+			apellidos: { maxlength: $.validator.format( "Por favor no ingrese m&aacute;s de {0} caracteres." ), minlength: $.validator.format( "Ingrese al menos {0} caracteres." ),required: "Campo obligatorio."},
+			correo:{maxlength: $.validator.format( "Por favor no ingrese m&aacute;s de {0} caracteres." )},
+			password: { maxlength: $.validator.format( "Por favor no ingrese m&aacute;s de {0} caracteres." ), minlength: $.validator.format( "Ingrese al menos {0} caracteres." ),required: "Campo obligatorio."},
+			passwordConfirm: { maxlength: $.validator.format( "Por favor no ingrese m&aacute;s de {0} caracteres." ), minlength: $.validator.format( "Ingrese al menos {0} caracteres." ),required: "Campo obligatorio."},
+			//'files[]': {accept: 'El o los archivos deben poseer una extensi&oacute;n v&aacute;lida'}
+		},
+		onfocusout: false,
+	    invalidHandler: function(form, validator) {
+	        let errors = validator.numberOfInvalids();
+	        if (errors) {
+	            validator.errorList[0].element.focus();
+	        }
+	    }
+	});	
+    
+     $('#btnGuardar').click(function(event){
+    	 
+		let formulario =  $('#formNuevoUsuario');
+
+        let validacionJquery = formulario.valid();
+        if (!validacionJquery) {
+        	formulario.removeClass("was-validated");
+        }else{
+        	formulario.addClass('was-validated');
+        	Swal.fire({
+				  html: "&iquest;Est&aacute; seguro de los datos ingresados?",
+				  icon: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#0d1b5c',
+				  cancelButtonColor: '#d33',
+				  confirmButtonText: 'S&iacute;',
+				  cancelButtonText: 'No',
+				  allowOutsideClick:false,
+				  showLoaderOnConfirm: true,
+				  preConfirm: () =>  {
+					  	let fd = new FormData($("#formNuevoUsuario")[0]);
+					    return $.ajax({data: fd,url: urlSaveNuevoUsuario, type: 'POST',cache : false,processData : false,contentType : false,})
+					    		.then(response => {
+				    				if (!response.success) {
+							          throw new Error(response.message)
+							        }
+							        return response.message;
+							    }).catch(e => {
+					    			let dataExtra = "";
+					    			if (e.message != null && e.message != undefined){
+					    				dataExtra = e.message;
+					    			}
+					    			if (e.responseJSON != null && e.responseJSON != undefined){
+					    				dataExtra = e.responseJSON.message;
+					    			} 
+					    			Swal.close(); 
+					    			Swal.fire({html:dataExtra, icon: 'error',confirmButtonText: 'Aceptar',confirmButtonColor: '#0d1b5c'}); 
+								});
+				  }
+				}).then((result) => {
+					
+				  if (result.isConfirmed) {
+						Swal.fire({html:"Su usuario fue registrado correctamente, ya puede ingresar al sistema con el correo y las credenciales registrada.",icon:"success",confirmButtonText: 'Aceptar',confirmButtonColor: '#0d1b5c'}).then((result) => {
+							document.location.href = urlLogin;
+						});
+				  }
+				  
+				  if (result.dismiss != null && result.dismiss != undefined){
+					  Swal.fire({html: "La operaci&oacute;n fue cancelada", icon: 'error',confirmButtonText: 'Aceptar',confirmButtonColor: '#0d1b5c'});
+				  }
+				  
+				});
+        }
+        
+    });
+    
+     $(document).ready(function () {
+    	 
+    	 $("#foto").fileinput({
+    		showUpload: false,
+    		dropZoneEnabled: true,
+   	     	dropZoneTitle:'Arrastre y suelte el archivo aqu&iacute;...',
+   	     	browseOnZoneClick:true,
+   	     	dropZoneClickTitle:'<br>(o haga clic para seleccionar el archivo)',
+   	     	allowedFileExtensions: ["jpg", "png", "jpeg","mp4","webm"],
+   	     	maxFileSize: 51200, // 50MB = 50 * 1024
+   	     	maxFileCount: 1,
+   	     	maxFilePreviewSize: 30720, // 15 MB por el momento para no sobrecargar la memoria del navegador
+   	     	removeLabel: 'Limpiar',
+   	     	removeClass: 'btn btn-warning waves-effect waves-light',
+   	     	removeIcon: '<i class="fa fa-trash-alt"></i>&nbsp;',
+   	     	cancelLabel: 'Cancelar',
+   	     	browseLabel: 'Buscar',
+   	     	browseClass: 'btn btn-info waves-effect waves-light',
+   	     	browseIcon: '<i class="fa fa-images"></i>&nbsp;',
+   	     	autoOrientImage: false,
+   	     	zoomIndicator: '<i class="fa fa-search-plus"></i>',
+   	     	msgLoading:'Cargando el archivo {index} de {files}...',
+   	     	msgNoFilesSelected:'No hay archivos seleccionados.',
+   	     	msgPlaceholder: 'Seleccionar archivos',
+   	     	msgZoomTitle: 'Ver detalle',
+   	     	msgProcessing: 'Procesando',
+   	     	msgFoldersNotAllowed: 'Solo arrastrar y soltar archivos! Se omitieron {n} carpetas soltadas.',
+   	     	msgFilesTooMany: 'El n&uacute;mero de archivos seleccionados para cargar <b>({n})</b> supera el l&iacute;mite m&aacute;ximo permitido de <b>{m}</b>.',
+   	     	msgTotalFilesTooMany: 'Puede cargar un m&aacute;ximo de <b>{m}</b> archivos (<b>{n}</b> archivos detectados).',
+   	     	msgFileNotFound: 'Archivo "{name}" no encontrado!',
+   	     	msgInvalidFileName: 'Caracteres no v&aacute;lidos o no admitidos en el nombre de archivo "{name}"',
+   	     	msgValidationError: 'Errores en Validaci&oacute;n de archivos, no se subiran los archivos',
+   	     	msgSelected: '{n} archivos seleccionados',
+   	     	msgInvalidFileExtension: 'Extensi&oacute;n no v&aacute;lida para el archivo "{name}" Solo se admiten archivos "{extensions}" <br>No se guardar&aacute; ningun archivo',
+   	     	msgSizeTooLarge: 'El archivo "{name}" (<b>{size}</b>) supera el tama&ntilde;o m&aacute;ximo de carga permitido de <b>{maxSize}</b>.',
+   	     	rotatableFileExtensions: [],
+   	     	msgDuplicateFile:'El archivo "{name}" del mismo tama�o "{size}" ya se seleccion&oacute; anteriormente. Omitiendo la selecci&oacute;n duplicada.',
+   	     	fileActionSettings: {
+		   	     showRemove: true,
+		   	     showUpload: false, 
+		   	     showDownload: false,
+		   	     showZoom: true,
+		   	     showDrag: false,
+		   	     showRotate: false,
+		   	     zoomIcon: '<i class="fa fa-search-plus"></i>',
+		   	     zoomClass: 'btn btn-kv btn-default btn-outline-secondary',
+		   	     zoomTitle: 'Ver vista previa detallada'
+   	     	},
+			previewZoomButtonIcons:{
+				prev: '<i class="fa fa-arrow-left"></i>',
+			    next: '<i class="fa fa-arrow-right"></i>',
+			    borderless: '<i class="fa fa-arrows-alt"></i>',
+			    close: '<i class="fa fa-window-close"></i>'
+   	     	},
+   	     	previewZoomButtonTitles:{
+				prev: 'Ver archivo anterior',
+				next: 'Ver siguiente archivo',
+				borderless: 'Alternar pantalla completa',
+				close: 'Cerrar vista previa detallada'
+   	     	},
+   	     	layoutTemplates:{
+   	     		modal: '<div class="modal-dialog modal-lg{rtl}" role="document">\n' +
+			   	         '  <div class="modal-content">\n' +
+			   	        '    <div class="modal-header kv-zoom-header">\n' +
+			   	        '      <h6 class="modal-title kv-zoom-title" id="istaArcvhivosNotificaciones"><span class="kv-zoom-caption"></span> <span class="kv-zoom-size"></span></h6>\n' +
+			   	        '      <div class="kv-zoom-actions">{borderless}{close}</div>\n' +
+			   	        '    </div>\n' +
+			   	        '    <div class="floating-buttons"></div>\n' +
+			   	        '    <div class="kv-zoom-body file-zoom-content {zoomFrameClass}"></div>\n' + '{prev} {next}\n' +
+			   	        '    <div class="kv-zoom-description"></div>\n' +
+			   	        '  </div>\n' +
+			   	        '</div>\n'
+   	     	}
+   	    });
+    	 
+    	 $('#foto').on('filezoomshow', function(event, params) {//se cambia porque la nueva version de bs cambio el data-dismiss a data-bs-dismiss
+     		$(".kv-zoom-actions > .btn-kv-close").removeAttr('data-dismiss');
+     		$(".kv-zoom-actions > .btn-kv-close").attr('data-bs-dismiss', 'modal');
+     		
+     		try {
+     			if ($("video.kv-preview-data.file-preview-video").length > 0){
+     				$.each($("video.kv-preview-data.file-preview-video"), function( index, elemento ) {
+     					elemento.pause();
+     				});
+     			}
+     		} catch (error) {
+     			  console.error(error);
+     		}
+     	});
+     	
+     	$('#foto').on('filezoomhide', function(event, params) {
+     		try {
+     			if ($("video.kv-preview-data.file-preview-video.file-zoom-detail").length > 0){
+     				$("video.kv-preview-data.file-preview-video.file-zoom-detail")[0].pause();	
+     			}
+     		} catch (error) {
+     			  console.error(error);
+     		}
+     	});
+    		 
+    });
+
+    </script>
+</section>
+</body>
+</html>
