@@ -17,36 +17,26 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 public class SecurityConfig {
 
 	@Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests()
-                .requestMatchers("/css/**",  "/js/**", "/fonts/**", "/img/**","/nuevousuario/**", "/password/reset/**").permitAll()
-                    .requestMatchers("/", "/login").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/index", true)
-                    .permitAll()
-                    .and()
-                    .logout()
-                    .logoutUrl("/logout")
-                    .permitAll()
-                    .and().csrf().csrfTokenRepository(csrfTokenRepository())
-                    .and().headers().frameOptions().sameOrigin();
-        
-        return http.build();
-    }
-    
-    private CsrfTokenRepository csrfTokenRepository() {
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setHeaderName("X-XSRF-TOKEN");
-        return repository;
-    }
-    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-	
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.authorizeHttpRequests()
+				.requestMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/nuevousuario/**", "/password/reset/**")
+				.permitAll().requestMatchers("/", "/login").permitAll().anyRequest().authenticated().and().formLogin()
+				.loginPage("/login").defaultSuccessUrl("/index", true).permitAll().and().logout().logoutUrl("/logout")
+				.permitAll().and().csrf().csrfTokenRepository(csrfTokenRepository()).and().headers().frameOptions()
+				.sameOrigin();
+
+		return http.build();
+	}
+
+	private CsrfTokenRepository csrfTokenRepository() {
+		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+		repository.setHeaderName("X-XSRF-TOKEN");
+		return repository;
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 }

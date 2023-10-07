@@ -1,0 +1,110 @@
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/basic-layout}">
+<head>
+    <title>Catalogo Estado</title>
+    <style type="text/css">label.error{color:red !important;}</style>
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+<div class="container-fluid">
+    <div class="header">
+        <h1 class="header-title" th:inline="text" th:text="'Crear/editar Estado'"></h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/index}" th:inline="text" th:text="#{label.home}"></a></li>
+                <li class="breadcrumb-item" aria-current="page"><a th:href="@{/ccEstadoAlerta}" th:inline="text" th:text="#{label.list} + ' '  + 'Estado'"></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Crear/editar Estado</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Crear/editar Estado</h4>
+                </div>
+                <hr class="m-t-0">
+                <form id="formCcEstado" class="needs-validation needs-validation-manual form-horizontal" novalidate th:action="@{/ccEstado/save}" th:object="${ccEstado}" method="POST">
+                
+                	<input type="hidden" th:field="*{id}"/>
+					
+                    <ul th:if="${#fields.hasErrors('global')}">
+                        <li th:each="err : ${#fields.errors('global')}" th:text="${err}"></li>
+                    </ul>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-12">
+                                <div class="form-group row mb-3">
+                                    <label for="descripcion" class="col-sm-2 text-right control-label col-form-label">Descripci&oacute;n</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="descripcion" th:field="*{descripcion}" placeholder="Descripci&oacute;n"  maxlength="100" >
+                                        <div th:errors="*{descripcion}"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3">
+                                    <label for="codigo" class="col-sm-2 text-right control-label col-form-label">C&oacute;digo Estado</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="codigo" th:field="*{codigo}" placeholder="C&oacute;digo Estado" maxlength="10" th:readonly="${ccEstado.id != null}" >
+                                        <div th:errors="*{codigo}"></div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group m-b-0 text-center">
+                            <button type="submit" class="btn btn-info waves-effect waves-light" th:text="#{action.save}"></button>
+                            <a class="btn btn waves-effect waves-light btn-block btn-danger" th:href="@{/ccEstado/}" th:inline="text">
+	                            Cancelar
+	                        </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<section layout:fragment="js" th:remove="tag">
+    
+    <script th:inline="javascript">
+    </script>
+    <script>
+   	
+    $("#formCcEstado").validate({
+		errorClass: "is-invalid error",
+        validClass: "is-valid",
+		rules: {
+			descripcion: {maxlength: 100, minlength:3,required:true},
+			codigo:{required:true, minlength:3}
+	    },
+	    messages: {
+	    	descripcion: { maxlength: $.validator.format( "Por favor no ingrese m&aacute;s de {0} caracteres." ), minlength: $.validator.format( "Ingrese al menos {0} caracteres." ),required: "Campo obligatorio."},
+	    	codigo:{required: "Campo obligatorio.",minlength: $.validator.format( "Ingrese al menos {0} caracteres." )}
+		},
+		onfocusout: false,
+	    invalidHandler: function(form, validator) {
+	        let errors = validator.numberOfInvalids();
+	        if (errors) {
+	            validator.errorList[0].element.focus();
+	        }
+	    }
+	});	
+   
+     $('#formCcEstado').submit(function(event){
+    	let formulario =  $('#formCcEstado');
+        let validacionJquery = formulario.valid();
+
+        if (!validacionJquery) {
+            event.preventDefault();
+            event.stopPropagation();
+        }else{
+        	formulario.addClass('was-validated');
+        }
+    });
+
+    </script>
+</section>
+</body>
+</html>

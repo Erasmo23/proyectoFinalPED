@@ -11,39 +11,39 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SecurityUserDetails implements UserDetails {
-	
+
 	@Getter
 	private static final long serialVersionUID = 1064178928280083346L;
-	
+
 	private Integer idUsuario;
-	
+
 	private String correoUsuario;
-	
+
 	private String nombreCompleto;
-	
+
 	private List<Auth> authorities = new ArrayList<>();
 	private List<String> roles = new ArrayList<>();
-	
-	 public void addGrantedAuthority(String name) {
-        Auth auth = new Auth();
-        auth.setName(name);
-        if (this.authorities.stream().noneMatch(o -> o.getName().equals(name))) {
-            this.authorities.add(auth);
-        }
 
-    }
+	public void addGrantedAuthority(String name) {
+		Auth auth = new Auth();
+		auth.setName(name);
+		if (this.authorities.stream().noneMatch(o -> o.getName().equals(name))) {
+			this.authorities.add(auth);
+		}
 
-    public void addRole(String name) {
-        roles.add(name);
-    }
+	}
 
-    public List<String> getRoles() {
-        return this.roles;
-    }
+	public void addRole(String name) {
+		roles.add(name);
+	}
+
+	public List<String> getRoles() {
+		return this.roles;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		 return this.authorities;
+		return this.authorities;
 	}
 
 	@Override
@@ -75,22 +75,22 @@ public class SecurityUserDetails implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 	@Setter
-    @Getter
-    public class Auth implements GrantedAuthority {
+	@Getter
+	public class Auth implements GrantedAuthority {
 
-        /**
-         *
-         */
-        private static final long serialVersionUID = 1L;
-        private String name;
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 1L;
+		private String name;
 
-        @Override
-        public String getAuthority() {
-            return this.name;
-        }
+		@Override
+		public String getAuthority() {
+			return this.name;
+		}
 
-    }
+	}
 
 }

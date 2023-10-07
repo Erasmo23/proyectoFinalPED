@@ -11,149 +11,6 @@
 
         <ul class="sidebar-nav" id="activitiesMenu">
         	
-        	<!-- Inicio -->
-	        <th:block sec:authorize="hasAnyAuthority('OP_READ_BANDEJA_COORDINADOR')">
-            	<li class="sidebar-header">
-                	Inicio
-            	</li>
-            	
-	            <li class="sidebar-item active">
-	                <a data-bs-target="#menuInicio" data-bs-toggle="collapse" class="sidebar-link">
-	                     <i class="fa-sharp fa-regular fas fa-home"></i><span
-	                        class="align-middle">Inicio</span>
-	                </a>
-	                <ul id="menuInicio" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                	<li class="sidebar-item" ><a class="sidebar-link" sec:authorize="hasAnyAuthority('OP_READ_BANDEJA_COORDINADOR')" th:href="@{/seguimientoLlamadas}">Bandeja de trabajo</a>
-	                    </li>
-	                    
-	                </ul>
-	            </li>
-	        </th:block>
-        	
-            <!-- Solicitudes -->
-            <th:block sec:authorize="hasAnyAuthority('OP_CREATE_TIPIFICACION', 'OP_READ_CONSULTA_SOLICITUD','OP_READ_SOLICITUDES_ELIMINADAS', 'OP_READ_SOLICITUDES_POR_ASIGNAR','OP_READ_SOLICITUD_AREA_TECNICA')">
-            	<li class="sidebar-header">
-                	Solicitudes
-            	</li>
-            	
-	            <li class="sidebar-item active">
-	                <a data-bs-target="#solicitudes" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 fas fa-list-ul"></i> <span
-	                        class="align-middle">Solicitudes</span>
-	                </a>
-	                <ul id="solicitudes" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                	<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_CREATE_TIPIFICACION')"><a class="sidebar-link" th:href="@{/gsSolicitud/nuevaSolicitud}">Nueva Solicitud</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_SOLICITUD_AREA_TECNICA')"><a class="sidebar-link" th:href="@{/solicitudAreaTecnica/nuevaSolicitud}">Solicitud de &Aacute;rea T&eacute;cnica</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_CONSULTA_SOLICITUD')"><a class="sidebar-link" th:href="@{/gsConsultarSolicitudes}">Consultar Solicitud</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_SOLICITUDES_ELIMINADAS')"><a class="sidebar-link" th:href="@{/gsSolicitudesEliminadas}">Historial Solicitudes Eliminadas</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_SOLICITUDES_POR_ASIGNAR')"><a class="sidebar-link" th:href="@{/gsBoSolicitud/PendienteAsignar}">Solicitudes Pendientes de Asignaci&oacute;n</a>
-	                    </li>
-	                </ul>
-	            </li>
-	        </th:block>
-	        
-	        <!-- Gestiones -->
-	        <th:block sec:authorize="hasAnyAuthority('OP_READ_CONTROL_GESTIONES_CC', 'OP_READ_GESTION_ASIG_TEC', 'OP_READ_GESTION_ASIG_PIVOT')">
-            	<li class="sidebar-header">
-                	Gestiones
-            	</li>
-            	
-	            <li class="sidebar-item active">
-	                <a data-bs-target="#gestionesMenu" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 fas fa-chart-bar"></i> <span class="align-middle">Gestiones</span>
-	                </a>
-	                <ul id="gestionesMenu" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                	<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_CONTROL_GESTIONES_CC')"><a class="sidebar-link" th:href="@{/gsControlGestionesCC}">Control de Gestiones<br>Call Center</a></li>
-	                	<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_CONTROL_GESTION_OPE')"><a class="sidebar-link" th:href="@{controlGestionOperativo}">Control de Gestiones Operativo</a></li>
-						<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_GESTION_ASIG_TEC')"><a class="sidebar-link" th:href="@{/gestionAsigTecnico}">Gesti&oacute;n de Asignaciones T&eacute;cnico</a></li>
-						<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_GESTION_ASIG_PIVOT')"><a class="sidebar-link" th:href="@{/gestionAsigPivot}">Reasignar Pivot</a></li>
-	                </ul>
-	            </li>
-	        </th:block>
-	        
-	        <!-- Evaluaciones -->
-	        <th:block sec:authorize="hasAnyAuthority('OP_READ_EVALUAR_SOLICITUD')">
-            	<li class="sidebar-header">
-                	Evaluaciones
-            	</li>
-            	
-	            <li class="sidebar-item active">
-	                <a data-bs-target="#evaluacionesMenu" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 fas fa-tasks"></i> <span class="align-middle">Evaluaciones</span>
-	                </a>
-	                <ul id="evaluacionesMenu" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                	<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_EVALUAR_SOLICITUD')"><a class="sidebar-link" th:href="@{/gsSolicitudEvaluacionBandeja/PendientesEvaluar}">Solicitudes Pendientes de Evaluaci&oacute;n</a></li>
-	                </ul>
-	            </li>
-	        </th:block>
-	        
-	        <!-- ORDENES DE TRABAJO -->
-            <th:block sec:authorize="hasAnyAuthority('OP_READ_GENERACION_OT', 'OP_READ_OT_PENDIENTES_ASIGNAR','OP_READ_REPORTE_COMERCIAL', 'OP_READ_REPORTE_OT','OP_READ_OT_PENDIENTES_PIVOT_ASIG',
-            							'OP_READ_OT_ASIGNADAS_JEFE', 'OP_READ_OT_ASIGNADAS_TEC' ,'OP_READ_REPORTES_PIVOT','OP_READ_TRASLADAR_OT_REGION','OP_READ_GENERACION_OT_TECNICO ')">
-            	<li class="sidebar-header">
-                	&Oacute;rdenes de Trabajo
-            	</li>
-            	
-	            <li class="sidebar-item active">
-	                <a data-bs-target="#ordenes" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 far fa-copy"></i> <span
-	                        class="align-middle">&Oacute;rdenes de Trabajo</span>
-	                </a>
-	                <ul id="ordenes" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_GENERACION_OT')"><a class="sidebar-link" th:href="@{/generacionOrdenes}">Generaci&oacute;n de &Oacute;rdenes</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_GENERACION_OT_TECNICO')"><a class="sidebar-link" th:href="@{/generacionOrdenes/tecnico}">Generaci&oacute;n de &Oacute;rdenes</a>
-	                    </li>
-						<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_OT_PENDIENTES_ASIGNAR')"><a class="sidebar-link" th:href="@{/gsOrdenTrabajo/pendientes}">Bandeja &Oacute;rdenes<br/>Pendientes de Asignar</a>
-	                    </li>
-						<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_OT_PENDIENTES_PIVOT_ASIG')"><a class="sidebar-link" th:href="@{/gsOrdenTrabajo/pendientesPivot}">Bandeja &Oacute;rdenes<br/>Pendientes de Asignar</a>
-	                    </li>
-                        <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_OT_ASIGNADAS_TEC')"><a class="sidebar-link" th:href="@{/gsOrdenTrabajoAsig/OrdenTrabajoAsignar}">Bandeja &Oacute;rdenes<br/>de Trabajo Asignadas</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_REPORTE_COMERCIAL')"><a class="sidebar-link" th:href="@{/reportesComerciales}">Reporte Comercial</a>
-	                    </li>
-						<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_REPORTE_OT')"><a class="sidebar-link" th:href="@{/rptOrdenesTrabajo}">Reporte de &Oacute;rdenes</a>
-						</li>
-                        
-						<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_REPORTES_PIVOT')"><a class="sidebar-link" th:href="@{/reportesPivot}">Reporte de &Oacute;rdenes</a>
-						</li>
-						<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_TRASLADAR_OT_REGION')"><a class="sidebar-link" th:href="@{/gsOrdenTrabajo/trasladoOrdenes}">Traslado de &Oacute;rdenes</a>
-						</li>
-						<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_REPORTES_PIVOT_JEFE')"><a class="sidebar-link" th:href="@{/reportesPivot/jefatura}">Reporte de &Oacute;rdenes</a>
-						</li>
-	                </ul>
-	            </li>
-	        </th:block>
-	        
-	        
-	        <!-- ORDENES DE TRABAJO II -->
-            <th:block sec:authorize="hasAnyAuthority('OP_READ_OT_ASIGNADAS_JEFE')">
-            	<li class="sidebar-header">
-                	Bandeja de Trabajo
-            	</li>
-            	
-	            <li class="sidebar-item active">
-	                <a data-bs-target="#ordenes1" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 fas fa-columns"></i> <span
-	                        class="align-middle">Bandeja de Trabajo</span>
-	                </a>
-	                <ul id="ordenes1" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                    
-                        <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_OT_ASIGNADAS_JEFE')"><a class="sidebar-link" th:href="@{/seguimientoLlamadas}">Bandeja de Coordinador</a>
-						</li>
-                        <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_OT_ASIGNADAS_JEFE')"><a class="sidebar-link" th:href="@{/gsOrdenTrabajo/OrdenTrabajoJefe}">Bandeja de  T&eacute;cnico</a>
-						</li>
-                        <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_OT_ASIGNADAS_JEFE')"><a class="sidebar-link" th:href="@{/gsBandejaTrabajoPivotJefe}">Bandeja de Pivot</a>
-						</li>
-						
-	                </ul>
-	            </li>
-	        </th:block>
-	        
 	        <!-- Alertas -->
 	        <th:block sec:authorize="hasAnyAuthority('OP_READ_ALERTA')">
             	<li class="sidebar-header">
@@ -169,104 +26,6 @@
 	                </ul>
 	            </li>
 	        </th:block>
-           
-            <th:block sec:authorize="hasAnyAuthority('OP_READ_EMPLEADO', 'OP_READ_USUARIO', 'OP_READ_ROL', 'OP_READ_PRIVILEGE', 'OP_READ_PIVOT_AREA_REGION', 'OP_READ_TECNICO_MUNICIPIO')">
-	           <li class="sidebar-header">
-		               Ajustes
-		        </li>
-		    </th:block>
-            <!-- Administracion de Usuarios -->
-            <th:block sec:authorize="hasAnyAuthority('OP_READ_EMPLEADO', 'OP_READ_USUARIO', 'OP_READ_ROL', 'OP_READ_PRIVILEGE', 'OP_READ_PIVOT_AREA_REGION', 'OP_READ_TECNICO_MUNICIPIO', 'OP_READ_TECNICO_AREA')">
-	            <li class="sidebar-item active">
-	                <a data-bs-target="#admin" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 fas fa-sitemap"></i> <span
-	                        class="align-middle">Administraci&oacute;n</span>
-	                </a>
-	                <ul id="admin" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                	<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_EMPLEADO')"><a class="sidebar-link" th:href="@{/ccEmpleado}">Empleados</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_USUARIO')"><a class="sidebar-link" th:href="@{/ccUsuario}">Usuarios</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_ROL')"><a class="sidebar-link" th:href="@{/ccRol}">Roles</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_PRIVILEGE')"><a class="sidebar-link" th:href="@{/secPrivilege}">Privilegios</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_PIVOT_AREA_REGION')"><a class="sidebar-link" th:href="@{/ccPivotAreaRegion}">Pivot por &Aacute;rea y Regi&oacute;n</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_TECNICO_MUNICIPIO')"><a class="sidebar-link" th:href="@{/ccTecnicoMunicipio}">T&eacute;cnico por Municipio</a>
-	                    </li>
-	                     <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_TECNICO_AREA')"><a class="sidebar-link" th:href="@{/ccTecnicoArea}">T&eacute;cnico por &Aacute;rea</a>
-	                    </li>
-	                </ul>
-	            </li>
-	        </th:block>
-	        <!-- Configuraciones/Solicitudes -->
-	         <th:block sec:authorize="hasAnyAuthority('OP_READ_REGION', 'OP_READ_DEPARTAMENTO', 'OP_READ_MUNICIPIO', 'OP_READ_AREA_SERVICIO', 'OP_READ_SERVICIO', 'OP_READ_ESPECIFICO_SERVICIO',
-	         									'OP_READ_ORIGEN', 'OP_READ_TIPO_TRAMITE', 'OP_READ_TIPO_CONSULTA', 'OP_READ_SUBTIPO_CONSULTA', 'OP_READ_PRIORIDAD', 'OP_READ_ESTADO_SOLICITUD',
-	         									'OP_READ_PREGUNTAS_FRECUENTES')">
-	         	<li class="sidebar-item active">
-	                <a data-bs-target="#configuraciones" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 fas fa-cogs"></i> <span
-	                        class="align-middle">Configuraci&oacute;n Solicitud</span>
-	                </a>
-	                <ul id="configuraciones" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                	<!-- Geograficas -->
-	                	<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_REGION')"><a class="sidebar-link" th:href="@{/ccRegion}">Regi&oacute;n</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_DEPARTAMENTO')"><a class="sidebar-link" th:href="@{/ccDepartamento}">Departamentos</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_MUNICIPIO')"><a class="sidebar-link" th:href="@{/ccMunicipio}">Municipios</a>
-	                    </li>
-	                    <!-- Tipologia -->
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_AREA_SERVICIO')"><a class="sidebar-link" th:href="@{/ccAreaServicio}">&Aacute;rea</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_SERVICIO')"><a class="sidebar-link" th:href="@{/ccReporteServicio}">Servicio</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_ESPECIFICO_SERVICIO')"><a class="sidebar-link" th:href="@{/ccEspecificoReporte}">Especifico</a>
-	                    </li>
-	                    <!-- Catalogos Tipificacion -->
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_ORIGEN')"><a class="sidebar-link" th:href="@{/ccTipoOrigen}">Origen</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_TIPO_TRAMITE')"><a class="sidebar-link" th:href="@{/ccTipoTramite}">Tipo Tr&aacute;mite</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_TIPO_CONSULTA')"><a class="sidebar-link" th:href="@{/ccTipoConsulta}">Tipo Consulta</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_SUBTIPO_CONSULTA')"><a class="sidebar-link" th:href="@{/ccSubTipoConsulta}">Subtipo Consulta</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_PRIORIDAD')"><a class="sidebar-link" th:href="@{/ccPrioridad}">Prioridad</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_ESTADO_SOLICITUD')"><a class="sidebar-link" th:href="@{/ccEstadoSolicitud}">Estado Solicitud</a>
-	                    </li>
-	                    <!-- Catalogos Varios -->
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_AGENCIA')"><a class="sidebar-link" th:href="@{/ccAgencia}">Agencias</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_PREGUNTAS_FRECUENTES')"><a class="sidebar-link" th:href="@{/ccPreguntasFrecuentes}">Preguntas Frecuentes</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_RED_SOCIAL')"><a class="sidebar-link" th:href="@{/ccRedSocial}">Redes Sociales</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_REQ_TRAMITE')"><a class="sidebar-link" th:href="@{/ccRequisitosTramite}">Requisitos para Tr&aacute;mites</a>
-	                    </li>
-	                </ul>
-	            </li>
-	         </th:block>
-	         
-	          <!-- Configuraciones/Alertas -->
-	         <th:block sec:authorize="hasAnyAuthority('OP_READ_ESTADO_ALERTA','OP_READ_TIPIFICADOR')">
-	         	<li class="sidebar-item active">
-	                <a data-bs-target="#configuracionesAlertas" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 fas fa-cogs"></i> <span
-	                        class="align-middle">Configuraci&oacute;n<br>&emsp;&emsp;Notificaci&oacute;n</span>
-	                </a>
-	                <ul id="configuracionesAlertas" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_ESTADO_ALERTA')"><a class="sidebar-link" th:href="@{/ccEstadoAlerta}">Estado Notificaci&oacute;n</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_TIPIFICADOR')"><a class="sidebar-link" th:href="@{/ccTipificador}">Tipificadores</a>
-	                    </li>
-	                    
-	                </ul>
-	            </li>
-	         </th:block>
-	         
 	         
 	         <!-- Configuraciones Orden de Trabajo -->
 	         <th:block sec:authorize="hasAnyAuthority('OP_READ_TIPO_UNIDAD','OP_READ_ROTURA_SUELO','OP_READ_FORMA_EXPLORACION','OP_READ_MATERIAL','OP_READ_HERRAMIENTA')">
@@ -291,21 +50,17 @@
 	            </li>
 	         </th:block>
 	         
-	         
-	         
-	          <!-- Configuraciones/Evaluaciones -->
-	         <th:block sec:authorize="hasAnyAuthority('OP_READ_OPCION_EVALUACION','OP_READ_RESULTADO_EVALUACION')">
+	          <!-- Configuraciones Admin2 -->
+	         <th:block sec:authorize="hasAuthority('ADMIN')">
 	         	<li class="sidebar-item active">
-	                <a data-bs-target="#configuracionesEvaluacion" data-bs-toggle="collapse" class="sidebar-link">
+	                <a data-bs-target="#configuracionesAdmin" data-bs-toggle="collapse" class="sidebar-link">
 	                    <i class="align-middle me-2 fas fa-cogs"></i> <span
-	                        class="align-middle">Configuraci&oacute;n<br>&emsp;&emsp;Evaluaci&oacute;n</span>
+	                        class="align-middle">Administraci&oacute;n</span>
 	                </a>
-	                <ul id="configuracionesEvaluacion" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_OPCION_EVALUACION')"><a class="sidebar-link" th:href="@{/ccOpcionEvaluacion}">Preguntas Evaluaci&oacute;n</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_RESULTADO_EVALUACION')"><a class="sidebar-link" th:href="@{/ccResultadoEvaluacion}">Respuestas Evaluaci&oacute;n</a>
-	                    </li>
-	                    
+	                <ul id="configuracionesAdmin" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
+	                    <li class="sidebar-item" ><a class="sidebar-link" th:href="@{/ccEstado}">Estados</a></li>
+	                    <li class="sidebar-item" ><a class="sidebar-link" th:href="@{/ccEtiquetas}">Etiquetas</a></li>
+	                    <li class="sidebar-item" ><a class="sidebar-link" th:href="@{/ccPrioridad}">Prioridades</a></li>
 	                </ul>
 	            </li>
 	         </th:block>
