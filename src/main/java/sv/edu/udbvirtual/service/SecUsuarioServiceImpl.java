@@ -61,6 +61,10 @@ public class SecUsuarioServiceImpl implements SecUsuarioService {
 	@Override
 	public ServiceResponse crearNuevoUsuario(NuevoUsuarioDTO nuevoUsuarioDTO) {
 		
+		secUsuarioRepository.findByCorreo(nuevoUsuarioDTO.getCorreo()).ifPresent(usuarioPersistido->{
+			throw new CustomRuntimeException("Correo ya fue registrado por otra cuenta, verificar datos");
+		});
+		
 		try {
 			
 			SecUsuario secUsuario = new SecUsuario();
