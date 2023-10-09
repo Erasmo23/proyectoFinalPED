@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import sv.edu.udbvirtual.commons.TransformerMessageValidation;
 import sv.edu.udbvirtual.dto.NuevoUsuarioDTO;
 import sv.edu.udbvirtual.service.SecUsuarioService;
+import sv.edu.udbvirtual.validator.NuevoUsuarioValidator;
 import sv.edu.udbvirtual.commons.ServiceResponse;
 import sv.edu.udbvirtual.commons.ValidadorHttp;
 import sv.edu.udbvirtual.commons.exception.CustomRuntimeException;
@@ -22,6 +23,9 @@ public class NuevoUsuarioController {
 
 	@Autowired
 	private SecUsuarioService secUsuarioService;
+	
+	@Autowired
+	private NuevoUsuarioValidator nuevoUsuarioValidator;
 	
 	@Autowired
 	private TransformerMessageValidation transformerMessageValidation;
@@ -36,7 +40,7 @@ public class NuevoUsuarioController {
 	@PostMapping("/save")
 	public @ResponseBody ServiceResponse save(@Valid NuevoUsuarioDTO nuevoUsuarioDTO, BindingResult bdResult) {
     	
-		//gsSolicitudAreaTecnicaValidator.validate(gsSolicitudAreaTecnicaDTO, bdResult);
+		nuevoUsuarioValidator.validate(nuevoUsuarioDTO, bdResult);
 		
     	String[] parametrosAExcluir = new String[]{""};
         if (ValidadorHttp.isPeticionCorrectaExcluyendoCampos(bdResult, parametrosAExcluir)) {

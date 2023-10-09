@@ -15,7 +15,7 @@
 					<hr class="m-t-0">
 				</div>
 				
-                <form id="formNuevoUsuario" enctype="multipart/form-data" class="needs-validation needs-validation-manual form-horizontal" novalidate th:action="@{/nuevousuario/save}" th:object="${nuevoUsuarioDTO}" method="POST">
+                <form id="formNuevoUsuario" enctype="multipart/form-data" class="form-horizontal" novalidate th:action="@{/nuevousuario/save}" th:object="${nuevoUsuarioDTO}" method="POST">
                     
                     <ul th:if="${#fields.hasErrors('global')}">
                         <li th:each="err : ${#fields.errors('global')}" th:text="${err}"></li>
@@ -55,8 +55,7 @@
                                 <div class="form-group row mb-3">
                                     <label for="password" class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Contraseña</label>
                                     <div class="col-xs-12 col-sm-10 col-md-10">
-                                        <input type="password" class="form-control" id="password"
-                                                    th:field="*{password}" maxlength="100"  required>
+                                        <input type="password" class="form-control" id="password" th:field="*{password}" maxlength="100"  required>
                                         <div th:errors="*{password}" style="color: red;"></div>
                                     </div>
                                 </div>
@@ -64,8 +63,7 @@
                                 <div class="form-group row mb-3">
                                     <label for="passwordConfirm" class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Confirmar Contraseña</label>
                                     <div class="col-xs-12 col-sm-10 col-md-10">
-                                        <input type="password" class="form-control" id="passwordConfirm"
-                                                    th:field="*{passwordConfirm}" maxlength="100"  required>
+                                        <input type="password" class="form-control" id="passwordConfirm" th:field="*{passwordConfirm}" maxlength="100"  required>
                                         <div th:errors="*{passwordConfirm}" style="color: red;"></div>
                                     </div>
                                 </div>
@@ -204,7 +202,7 @@
    	     	dropZoneTitle:'Arrastre y suelte el archivo aqu&iacute;...',
    	     	browseOnZoneClick:true,
    	     	dropZoneClickTitle:'<br>(o haga clic para seleccionar el archivo)',
-   	     	allowedFileExtensions: ["jpg", "png", "jpeg","mp4","webm"],
+   	     	allowedFileExtensions: ["jpg", "png", "jpeg"],
    	     	maxFileSize: 51200, // 50MB = 50 * 1024
    	     	maxFileCount: 1,
    	     	maxFilePreviewSize: 30720, // 15 MB por el momento para no sobrecargar la memoria del navegador
