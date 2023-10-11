@@ -11,45 +11,6 @@
 
         <ul class="sidebar-nav" id="activitiesMenu">
         	
-	        <!-- Alertas -->
-	        <th:block sec:authorize="hasAnyAuthority('OP_READ_ALERTA')">
-            	<li class="sidebar-header">
-                	Notificaciones
-            	</li>
-            	
-	            <li class="sidebar-item active">
-	                <a data-bs-target="#alertasMenu" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 fas fa-exclamation-circle"></i> <span class="align-middle">Notificaciones</span>
-	                </a>
-	                <ul id="alertasMenu" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                	<li class="sidebar-item" sec:authorize="hasAnyAuthority('OP_READ_ALERTA')"><a class="sidebar-link" th:href="@{/gsAlerta}">Bandeja de Notificaciones</a></li>
-	                </ul>
-	            </li>
-	        </th:block>
-	         
-	         <!-- Configuraciones Orden de Trabajo -->
-	         <th:block sec:authorize="hasAnyAuthority('OP_READ_TIPO_UNIDAD','OP_READ_ROTURA_SUELO','OP_READ_FORMA_EXPLORACION','OP_READ_MATERIAL','OP_READ_HERRAMIENTA')">
-	         	<li class="sidebar-item active">
-	                <a data-bs-target="#configuracionesOrdenTrabajo" data-bs-toggle="collapse" class="sidebar-link">
-	                    <i class="align-middle me-2 fas fa-cogs"></i> <span
-	                        class="align-middle">Configuraci&oacute;n<br>&emsp;&emsp;Orden de Trabajo</span>
-	                </a>
-	                <ul id="configuracionesOrdenTrabajo" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
-	                	<li class="sidebar-item" sec:authorize="hasAuthority('OP_READ_TIPO_UNIDAD')"><a class="sidebar-link" th:href="@{/ccTipoUnidad}">Tipo de Unidad</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAuthority('OP_READ_ROTURA_SUELO')"><a class="sidebar-link" th:href="@{/ccRoturaSuelo}">Rotura de Suelo</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAuthority('OP_READ_FORMA_EXPLORACION')"><a class="sidebar-link" th:href="@{/ccFormaExploracion}">Forma de Exploraci&oacute;n</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAuthority('OP_READ_MATERIAL')"><a class="sidebar-link" th:href="@{/ccMaterial}">Material</a>
-	                    </li>
-	                    <li class="sidebar-item" sec:authorize="hasAuthority('OP_READ_HERRAMIENTA')"><a class="sidebar-link" th:href="@{/ccHerramienta}">Herramientas</a>
-	                    </li>
-	                    
-	                </ul>
-	            </li>
-	         </th:block>
-	         
 	          <!-- Configuraciones Admin2 -->
 	         <th:block sec:authorize="hasAuthority('ADMIN')">
 	         	<li class="sidebar-item active">
@@ -64,7 +25,23 @@
 	                </ul>
 	            </li>
 	         </th:block>
-	        
+	         
+	         <!-- Menu Tareas -->
+	         <th:block sec:authorize="hasAnyAuthority('ADMIN','USER_TASK')">
+	         	<li class="sidebar-item active">
+	                <a data-bs-target="#menuTask" data-bs-toggle="collapse" class="sidebar-link">
+	                    <i class="align-middle me-2 fas fa-tasks"></i> <span
+	                        class="align-middle">Tareas</span>
+	                </a>
+	                <ul id="menuTask" class="sidebar-dropdown list-unstyled collapse hide" data-bs-parent="#sidebar">
+	                	<li class="sidebar-item" ><a class="sidebar-link" th:href="@{/tarea}">Nueva Tarea</a></li>
+	                    <li class="sidebar-item" ><a class="sidebar-link" th:href="@{/ccRoturaSuelo}">SubMenu-2</a></li>
+	                    <li class="sidebar-item" ><a class="sidebar-link" th:href="@{/ccFormaExploracion}">SubMenu-3</a></li>
+	                    <li class="sidebar-item" ><a class="sidebar-link" th:href="@{/ccMaterial}">SubMenu-4</a></li>
+	                    <li class="sidebar-item" ><a class="sidebar-link" th:href="@{/ccHerramienta}">SubMenu-5</a></li>
+	                </ul>
+	            </li>
+	         </th:block>
             
         </ul>
     </div>
