@@ -1,7 +1,6 @@
 package sv.edu.udbvirtual.domain;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -14,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "CC_ESTADO")
-public class CcEstado implements Serializable {
+@Table(name = "CC_PRIORIDAD")
+public class CcPrioridad implements Serializable{
 
 	@Getter
     private static final long serialVersionUID = 1L;
@@ -49,5 +49,19 @@ public class CcEstado implements Serializable {
     @NotBlank(message = "No puede estar vacio el campo codigo")
     @Size(max = 10, message = "El campo codigo excede la longitud permitida")
     private String codigo;
+	
+	@Column(name = "ORDEN" )
+	@NotNull(message = "No puede estar vacio el campo nmOrden")
+	private Integer orden;
+	
+	@Column(name = "ESTADO")
+//  @NotNull(message = "No puede estar vacio el campo bnEstado")
+	private Boolean estado;
+	
+	
+	public String getEstadoDelegate() {
+        if(Boolean.TRUE.equals(estado)) return "Activo";
+        else return "Inactivo";
+    }
 	
 }

@@ -31,7 +31,7 @@ public class CcEstadoServiceImpl implements CcEstadoService {
 		
 		ccEstadoRepository.save(ccEstado);
 		serviceResponse.setMessage(Constants.MSG_GUARDADO_EXITOSO);
-		serviceResponse.setSuccess(true);
+		serviceResponse.setSuccess(Boolean.TRUE);
 
 		return serviceResponse;
 	}

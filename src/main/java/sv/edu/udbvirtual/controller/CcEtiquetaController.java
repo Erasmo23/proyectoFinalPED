@@ -20,61 +20,67 @@ import sv.edu.udbvirtual.commons.ServiceResponse;
 import sv.edu.udbvirtual.commons.ValidadorHttp;
 import sv.edu.udbvirtual.commons.datatables.mapping.DataTablesInput;
 import sv.edu.udbvirtual.commons.datatables.mapping.DataTablesOutput;
-import sv.edu.udbvirtual.domain.CcEstado;
-import sv.edu.udbvirtual.service.CcEstadoService;
+import sv.edu.udbvirtual.domain.CcEtiqueta;
+import sv.edu.udbvirtual.service.CcEtiquetaService;
 
 @Controller
-@RequestMapping("/ccEstado")
-public class CcEstadoController {
+@RequestMapping("/ccEtiqueta")
+public class CcEtiquetaController {
 
 	private static final String HAS_AUTHORITY_ADMIN = "hasAuthority('ADMIN')";
-	private static final String REDIRECT_CC_ESTADO = "redirect:/ccEstado/";
-	private static final String CC_ESTADO = "ccEstado";
-	
+	private static final String REDIRECT_CC_ETIQUETA = "redirect:/ccEtiqueta/";
+	private static final String CC_ETIQUETA = "ccEtiqueta";
+
 	@Autowired
-	private CcEstadoService ccEstadoService;
-	
+	private CcEtiquetaService ccEtiquetaService;
+
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	@GetMapping(value = { "/", "" })
 	public String indexCcEstado() {
-		return "pages/ccEstado/list";
+		return "pages/ccEtiqueta/list";
 	}
-	
+
 	@GetMapping("/list")
-	public @ResponseBody DataTablesOutput<CcEstado> listCcEstado(@Valid DataTablesInput input) {
-		return ccEstadoService.findAll(input);
+	public @ResponseBody DataTablesOutput<CcEtiqueta> listCcEstado(@Valid DataTablesInput input) {
+		return ccEtiquetaService.findAll(input);
 	}
-	
+
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	@GetMapping("/form")
 	public String formCcTipificador(@RequestParam(required = false) Integer id, Model model) {
-		if (!model.containsAttribute(CC_ESTADO)) {
-			CcEstado ccEstado = new CcEstado();
+		if (!model.containsAttribute(CC_ETIQUETA)) {
+			CcEtiqueta ccEtiqueta = new CcEtiqueta();
 			if (id != null) {
-				Optional<CcEstado> optCcEstado = ccEstadoService.findById(id);
-				if (!optCcEstado.isPresent()) {
-					throw new ResponseStatusException(HttpStatus.FORBIDDEN, "CcEstado Not Found");
+				Optional<CcEtiqueta> optCcEtiqueta = ccEtiquetaService.findById(id);
+				if (!optCcEtiqueta.isPresent()) {
+					throw new ResponseStatusException(HttpStatus.FORBIDDEN, "CcEtiqueta Not Found");
 				}
-				ccEstado = optCcEstado.get();
+				ccEtiqueta = optCcEtiqueta.get();
 			}
-			model.addAttribute(CC_ESTADO, ccEstado);
+			model.addAttribute(CC_ETIQUETA, ccEtiqueta);
 		}
-		return "pages/ccEstado/form";
+		return "pages/ccEtiqueta/form";
 	}
-	
+
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	@PostMapping("/save")
-	public String saveEntity(@Valid CcEstado ccEstado, BindingResult bdResult, RedirectAttributes atts) {
+	public String saveEntity(@Valid CcEtiqueta ccEtiqueta, BindingResult bdResult, RedirectAttributes atts) {
 		String redirectTo = Constants.REDIRECT_FORM;
 		String[] parametrosAExcluir = new String[] { "" };
 		if (ValidadorHttp.isPeticionCorrectaExcluyendoCampos(bdResult, parametrosAExcluir)) {
-			ServiceResponse serviceResponse = ccEstadoService.saveValidated(ccEstado);
+			ServiceResponse serviceResponse = ccEtiquetaService.saveValidated(ccEtiqueta);
 			atts.addFlashAttribute(Constants.SERVICE_RESPONSE_NAME, serviceResponse);
-			redirectTo = serviceResponse.isSuccess() ? REDIRECT_CC_ESTADO : redirectTo;
+			redirectTo = serviceResponse.isSuccess() ? REDIRECT_CC_ETIQUETA : redirectTo;
 		}
-		atts.addFlashAttribute(CC_ESTADO, ccEstado);
-		atts.addFlashAttribute(BindingResult.class.getCanonicalName() + ".ccEstado", bdResult);
+		atts.addFlashAttribute(CC_ETIQUETA, ccEtiqueta);
+		atts.addFlashAttribute(BindingResult.class.getCanonicalName() + ".ccEtiqueta", bdResult);
 		return redirectTo;
 	}
-	
+
+	@PreAuthorize(HAS_AUTHORITY_ADMIN)
+	@PostMapping(value = { "/cambioEstado" })
+	public @ResponseBody ServiceResponse cambioEstado(@RequestParam(value = "id", required = false) Integer id) {
+		return ccEtiquetaService.cambioEstado(id);
+	}
+
 }

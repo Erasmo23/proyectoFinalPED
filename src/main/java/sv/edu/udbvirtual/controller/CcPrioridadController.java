@@ -20,61 +20,67 @@ import sv.edu.udbvirtual.commons.ServiceResponse;
 import sv.edu.udbvirtual.commons.ValidadorHttp;
 import sv.edu.udbvirtual.commons.datatables.mapping.DataTablesInput;
 import sv.edu.udbvirtual.commons.datatables.mapping.DataTablesOutput;
-import sv.edu.udbvirtual.domain.CcEstado;
-import sv.edu.udbvirtual.service.CcEstadoService;
+import sv.edu.udbvirtual.domain.CcPrioridad;
+import sv.edu.udbvirtual.service.CcPrioridadService;
 
 @Controller
-@RequestMapping("/ccEstado")
-public class CcEstadoController {
+@RequestMapping("/ccPrioridad")
+public class CcPrioridadController {
 
 	private static final String HAS_AUTHORITY_ADMIN = "hasAuthority('ADMIN')";
-	private static final String REDIRECT_CC_ESTADO = "redirect:/ccEstado/";
-	private static final String CC_ESTADO = "ccEstado";
-	
+	private static final String REDIRECT_CC_PRIORIDAD = "redirect:/ccPrioridad/";
+	private static final String CC_PRIORIDAD = "ccPrioridad";
+
 	@Autowired
-	private CcEstadoService ccEstadoService;
-	
+	private CcPrioridadService ccPrioridadService;
+
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	@GetMapping(value = { "/", "" })
 	public String indexCcEstado() {
-		return "pages/ccEstado/list";
+		return "pages/ccPrioridad/list";
 	}
-	
+
 	@GetMapping("/list")
-	public @ResponseBody DataTablesOutput<CcEstado> listCcEstado(@Valid DataTablesInput input) {
-		return ccEstadoService.findAll(input);
+	public @ResponseBody DataTablesOutput<CcPrioridad> listCcEstado(@Valid DataTablesInput input) {
+		return ccPrioridadService.findAll(input);
 	}
-	
+
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	@GetMapping("/form")
 	public String formCcTipificador(@RequestParam(required = false) Integer id, Model model) {
-		if (!model.containsAttribute(CC_ESTADO)) {
-			CcEstado ccEstado = new CcEstado();
+		if (!model.containsAttribute(CC_PRIORIDAD)) {
+			CcPrioridad ccPrioridad = new CcPrioridad();
 			if (id != null) {
-				Optional<CcEstado> optCcEstado = ccEstadoService.findById(id);
+				Optional<CcPrioridad> optCcEstado = ccPrioridadService.findById(id);
 				if (!optCcEstado.isPresent()) {
-					throw new ResponseStatusException(HttpStatus.FORBIDDEN, "CcEstado Not Found");
+					throw new ResponseStatusException(HttpStatus.FORBIDDEN, "CcPrioridad Not Found");
 				}
-				ccEstado = optCcEstado.get();
+				ccPrioridad = optCcEstado.get();
 			}
-			model.addAttribute(CC_ESTADO, ccEstado);
+			model.addAttribute(CC_PRIORIDAD, ccPrioridad);
 		}
-		return "pages/ccEstado/form";
+		return "pages/ccPrioridad/form";
 	}
-	
+
 	@PreAuthorize(HAS_AUTHORITY_ADMIN)
 	@PostMapping("/save")
-	public String saveEntity(@Valid CcEstado ccEstado, BindingResult bdResult, RedirectAttributes atts) {
+	public String saveEntity(@Valid CcPrioridad ccPrioridad, BindingResult bdResult, RedirectAttributes atts) {
 		String redirectTo = Constants.REDIRECT_FORM;
 		String[] parametrosAExcluir = new String[] { "" };
 		if (ValidadorHttp.isPeticionCorrectaExcluyendoCampos(bdResult, parametrosAExcluir)) {
-			ServiceResponse serviceResponse = ccEstadoService.saveValidated(ccEstado);
+			ServiceResponse serviceResponse = ccPrioridadService.saveValidated(ccPrioridad);
 			atts.addFlashAttribute(Constants.SERVICE_RESPONSE_NAME, serviceResponse);
-			redirectTo = serviceResponse.isSuccess() ? REDIRECT_CC_ESTADO : redirectTo;
+			redirectTo = serviceResponse.isSuccess() ? REDIRECT_CC_PRIORIDAD : redirectTo;
 		}
-		atts.addFlashAttribute(CC_ESTADO, ccEstado);
-		atts.addFlashAttribute(BindingResult.class.getCanonicalName() + ".ccEstado", bdResult);
+		atts.addFlashAttribute(CC_PRIORIDAD, ccPrioridad);
+		atts.addFlashAttribute(BindingResult.class.getCanonicalName() + ".ccPrioridad", bdResult);
 		return redirectTo;
 	}
-	
+
+	@PreAuthorize(HAS_AUTHORITY_ADMIN)
+	@PostMapping(value = { "/cambioEstado" })
+	public @ResponseBody ServiceResponse cambioEstado(@RequestParam(value = "id", required = false) Integer id) {
+		return ccPrioridadService.cambioEstado(id);
+	}
+
 }

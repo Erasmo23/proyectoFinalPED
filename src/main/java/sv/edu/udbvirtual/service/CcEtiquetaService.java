@@ -1,0 +1,19 @@
+package sv.edu.udbvirtual.service;
+
+import java.util.Optional;
+import sv.edu.udbvirtual.commons.ServiceResponse;
+import sv.edu.udbvirtual.commons.datatables.mapping.DataTablesInput;
+import sv.edu.udbvirtual.commons.datatables.mapping.DataTablesOutput;
+import sv.edu.udbvirtual.domain.CcEtiqueta;
+
+public interface CcEtiquetaService {
+
+	Optional<CcEtiqueta> findById(Integer id);
+	
+	ServiceResponse saveValidated(CcEtiqueta ccEtiqueta);
+	
+	DataTablesOutput<CcEtiqueta> findAll(DataTablesInput input);
+	
+	ServiceResponse cambioEstado(Integer id);
+	
+}

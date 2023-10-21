@@ -1,0 +1,166 @@
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/basic-layout}">
+<head>
+    <title th:inline="text" th:text="#{label.list} + ' ' + 'Prioridad'"></title>
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+<div class="container-fluid">
+    <div class="header">
+        <h1 class="header-title" th:inline="text" th:text="#{label.list} + ' ' + 'Prioridad'"></h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/index}" th:inline="text" th:text="#{label.home}"></a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:inline="text" th:text="#{label.list} + ' '  + 'Prioridad'"></li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <th:block th:insert="fragments/service-response-painter" th:remove="tag"/>
+                    <div class="card-title col-lg-2">
+                        <a class="btn btn waves-effect waves-light btn-block btn-info" 
+                           th:href="@{/ccPrioridad/form}" th:inline="text">
+                            <i class="fa fa-plus-circle pr-1"></i>[[#{action.new}]]
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="tblCcPrioridad" class="table table-hover table-bordered" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Acciones</th>
+                                <th>id</th>
+                                <th>Descripci&oacute;n</th>
+                                <th>C&oacute;digo Prioridad</th>
+                                <th>Orden</th>
+                                <th>Estado</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section layout:fragment="js" th:remove="tag">
+
+    <script th:inline="javascript">
+        const urlCcPrioridadDataTable = /*[[@{/ccPrioridad/list}]]*/"";
+        const urlGetCcPrioridad = /*[[@{/ccPrioridad/form}]]*/"";
+        const urlCambioEstadoCcPrioridad = /*[[@{/ccPrioridad/cambioEstado}]]*/"";
+        const urlEstadoSelect2 = /*[[@{/select2/cboFilterTrueFalse}]]*/"";
+    </script>
+    <script>
+        var table = $('table#tblCcPrioridad').DataTable({
+            ajax: urlCcPrioridadDataTable,
+            serverSide: true,
+            orderCellsTop: true,
+            fixedHeader: true,
+            columns: [
+                {
+                    targets: -1,
+                    data: null,
+                    searchable: false,
+                    orderable: false,
+                    width: "10%",
+                    render: function (data, type, row) {
+                    	
+                        let id = row.id;
+                        let divReturn = '<div class="button-group" style="display: inline-flex;">';
+							
+						divReturn +=  '<button title="Editar" class="btn waves-effect waves-light btn-success" type="button" onClick="ajaxEdit(' + id + ')" id="btnEditar_' + id + '" > <i class="fa fa-pencil-alt"></i></button>' ;
+                        
+                        if(row.estado){
+							divReturn += '<button title="Inactivar registro" class="btn waves-effect waves-light btn-danger" type="button" onClick="ajaxCambioEstado(' + id + ',\'inactivar\')" id="btnInactivar_' + id + '" > <i class="fas fa-ban"></i> </button>';
+						}else{
+							divReturn += '<button title="Activar registro" class="btn waves-effect waves-light btn-info" type="button" onClick="ajaxCambioEstado(' + id + ', \'activar\')" id="btnActivar_' + id + '" > <i class="fas fa-check"></i> </button>';
+						}
+                        
+                        
+                        return divReturn +='</div>';
+                    }
+                }
+                , {
+                    data: 'id',
+                    orderable: false
+                    , visible: false
+                    , searchable: false
+                }
+                , {
+                    data: 'descripcion'
+                    , orderable: false
+                }
+                , {
+                    data: 'codigo'
+                    , orderable: false
+                },
+                {
+                    data: 'orden'
+                    , orderable: false
+                }
+                , {data: 'estado', orderable: false,orderable: false,filterType: "select2",filterUrl: urlEstadoSelect2,
+                	render: function (data, type, row) {
+                		return row.estadoDelegate;
+                    }
+                  }
+            ]
+        });
+
+        crearFiltrosDataTable("#tblCcPrioridad", table);
+        
+        $("#search_tblCcPrioridad_orden").inputmask({regex: "[0-9]{0,2}",placeholder: ""});
+
+        function ajaxEdit(id){
+            document.location.href = urlGetCcPrioridad + '?id=' + id;
+        }
+
+        function ajaxCambioEstado(id, accion){
+        	let mensaje = "";
+        	let mensajeConfirmacion = "";
+        	if (accion === "activar"){
+        		mensaje = "Se activar&aacute; el registro";
+        		mensajeConfirmacion = "\u00A1Activado!";
+        	}else{
+        		mensaje = "Se inactivar&aacute; el registro";
+        		mensajeConfirmacion = "\u00A1Inactivado!";
+        	}
+            Swal.fire({
+                title: '\u00BFEst\u00E1 seguro?',
+                html: mensaje,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'S&iacute;',
+                cancelButtonText: 'No'
+            }).then(function(e) {
+                if (e.isConfirmed) {
+                    $.ajax({
+                        data: {id} ,
+                        url: urlCambioEstadoCcPrioridad,
+                        type: 'POST',
+                        success: function (result) {
+                            if (result.success) {
+                                Swal.fire({title: mensajeConfirmacion, text: result.message, type:'success'});
+                                $('#tblCcPrioridad').DataTable().ajax.reload();
+                            } else {
+                                Swal.fire({title: "\u00A1Error!", text: result.message, type:'error'});
+                            }
+                        },
+                        error: function (x, e,  thrownError) {
+                            Swal.fire({title: "\u00A1Error!", text: "Error interno del servidor.", type:'error'});
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</section>
+</body>
+</html>
