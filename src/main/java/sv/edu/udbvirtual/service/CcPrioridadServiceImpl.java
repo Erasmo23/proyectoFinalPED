@@ -2,6 +2,8 @@ package sv.edu.udbvirtual.service;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sv.edu.udbvirtual.commons.Constants;
@@ -62,6 +64,18 @@ public class CcPrioridadServiceImpl implements CcPrioridadService {
 						: Constants.MSG_INACTIVADO_EXITOSO);
 		serviceResponse.setSuccess(Boolean.TRUE);
 		return serviceResponse;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Slice<CcPrioridad> getListByDescripcion(String query, Pageable page) {
+		return ccPrioridadRepository.findByDescripcionLike(query, page);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Slice<CcPrioridad> getListActivosByDescripcion(String query, Pageable page) {
+		return ccPrioridadRepository.findByDescripcionLikeActivos(query, page);
 	}
 
 }

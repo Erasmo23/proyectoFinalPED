@@ -1,0 +1,236 @@
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{layouts/basic-layout}">
+
+<head>
+	<title>Nuevo-Modificar Avance a Tarea</title>
+	<style type="text/css">
+		label.error {
+			color: red !important;
+		}
+	</style>
+</head>
+
+<body>
+	<section layout:fragment="content" th:remove="tag">
+		<div class="container-fluid">
+			<div class="header">
+				<h1 class="header-title" th:inline="text" th:text="${avance.id == null ? 'Nuevo Avance a Tarea' : 'Modificar Avance a Tarea'}"></h1>
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/index}" th:inline="text" th:text="#{label.home}"></a>
+						</li>
+						<li class="breadcrumb-item" aria-current="page"><a th:href="@{/tareas/}" th:inline="text"
+								th:text="'Seguimiento de Tareas'"></a></li>
+						<li class="breadcrumb-item active" aria-current="page" th:text="${avance.id == null ? 'Nuevo Avance a Tarea' : 'Modificar Avance a Tarea'}"></li>
+					</ol>
+				</nav>
+			</div>
+
+			<div class="row">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="text-body" th:text="${avance.id == null ? 'Nuevo Avance a Tarea' : 'Modificar Avance a Tarea'}"></h3>
+							<hr class="m-t-0">
+						</div>
+
+						<form id="formAvances" class="needs-validation needs-validation-manual form-horizontal" novalidate th:action="@{/avances/save}" th:object="${avance}" method="POST">
+							
+							<input type="hidden" id="id" th:field="*{id}" />
+							<input type="hidden" name="tarea.id" th:value="${tareaRelacion.id}" />
+							<input type="hidden" id="fechaCreacion" th:field="*{fechaCreacion}">
+
+							<ul th:if="${#fields.hasErrors('global')}">
+								<li th:each="err : ${#fields.errors('global')}" th:text="${err}"></li>
+							</ul>
+
+							<div class="card-body">
+								<div class="row">
+									<div class="col-sm-12 col-lg-12">
+										
+										<div class="form-group row mb-3">
+											<label for="descripcion"
+												class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Tarea Seleccionada:</label>
+											<div class="col-xs-12 col-sm-10 col-md-10">
+												<input type="input" class="form-control" th:value="${tareaRelacion.titulo}" readonly />
+											</div>
+										</div>
+										
+										<div class="form-group row mb-3">
+											<label for="descripcion"
+												class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Peso Total de Avances de la tarea:</label>
+											<div class="col-xs-12 col-sm-10 col-md-10">
+												<input type="input" class="form-control" th:value="${PorcentajeAvanceTarea} + '%'" readonly />
+											</div>
+										</div>
+
+										<div class="form-group row mb-3">
+											<label for="descripcion"
+												class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Descripci&oacute;n</label>
+											<div class="col-xs-12 col-sm-10 col-md-10">
+												<textarea class="form-control" rows="4" id="descripcion"
+													th:field="*{descripcion}" placeholder="Descripci&oacute;n"
+													maxlength="250" required></textarea>
+												<div th:uerrors="*{descripcion}" style="color: red;"></div>
+											</div>
+										</div>
+										
+										<div class="form-group row mb-3">
+		                                    <label for="orden" class="col-sm-2 text-right control-label col-form-label">Peso del Avance en Tarea</label>
+		                                    <div class="col-sm-9">
+		                                        <input type="text" class="form-control" id="pesoAvance" th:field="*{pesoAvance}" placeholder="Peso Avance" maxlength="2"  >
+		                                        <div th:errors="*{pesoAvance}"></div>
+		                                    </div>
+		                                </div>
+
+										<div class="form-group row mb-3">
+											<label for="fechaVencimiento" class="col-sm-2 text-right control-label col-form-label">Fecha de Realizaci&oacute;n</label>
+											<div class="col-sm-10">
+												<div class="input-group date">
+													<div class="input-group">
+														<input type="text" class="form-control datepicker-initializer" id="fechaVencimiento" name="fechaVencimiento" 
+															placeholder="DD/MM/YYYY" required th:value="${avance.fechaVencimientoFormateada}"/>
+														<span class="input-group-append">
+															<span class="input-group-text bg-light d-block">
+																<i class="fa fa-calendar"></i>
+															</span>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="form-group m-b-0 text-center">
+									<button type="button" class="btn btn-info waves-effect waves-light" th:text="#{action.save}" id="btnGuardarAvance"></button>
+
+									<a class="btn btn waves-effect waves-light btn-block btn-danger"
+										th:href="@{/tareas/}" th:inline="text">
+										Cancelar
+									</a>
+
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section layout:fragment="js" th:remove="tag">
+		<script th:inline="javascript">
+
+			const urlIndexSeguimientoTareas = /*[[@{/tareas/}]]*/"";
+
+			$("#formAvances").validate({
+				errorClass: "is-invalid error",
+				validClass: "is-valid",
+				rules: {
+					descripcion: {maxlength: 250, minlength: 5, required: true},
+					pesoAvance: {required: true},
+					fechaVencimiento: {required: true}
+				},
+				messages: {
+					descripcion: {maxlength: $.validator.format("Por favor no ingrese m&aacute;s de {0} caracteres."), minlength: $.validator.format("Ingrese al menos {0} caracteres."), required: "Campo obligatorio."},
+					pesoAvance: {required: "Campo obligatorio."},
+					fechaVencimiento: {required: "Campo obligatorio."}
+				},
+				onfocusout: false,
+				invalidHandler: function (form, validator) {
+					let errors = validator.numberOfInvalids();
+					if (errors) {
+						validator.errorList[0].element.focus();
+					}
+				}
+			});
+
+			$('#btnGuardarAvance').click(function (event) {
+
+				let formulario = $('#formAvances');
+				let idAvance = $("#id").val();
+
+				let validacionJquery = formulario.valid();
+				if (!validacionJquery) {
+					formulario.removeClass("was-validated");
+				} else {
+					formulario.addClass('was-validated');
+					
+					let mensaje = "";
+		        	let mensajeConfirmacion = "";
+		        	if (idAvance != null && idAvance != ""){
+		        		mensaje = "&iquest;Est&aacute; seguro que desea modificar el avance a la tarea?";
+		        		mensajeConfirmacion = "El avance fue modificado exitosamente.";
+		        	}else{
+		        		mensaje = "&iquest;Est&aacute; seguro que desea a&ntilde;adir este nuevo avance a la tarea?";
+		        		mensajeConfirmacion = "El avance fue a&ntilde;adido exitosamente.";
+		        	}
+					
+					
+					Swal.fire({
+						html: mensaje,
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#0d1b5c',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Aceptar',
+						cancelButtonText: 'Cancelar',
+						allowOutsideClick: false,
+						showLoaderOnConfirm: true,
+						preConfirm: () => {
+							return $.ajax({data: formulario.serialize(),url: formulario.attr("action"), type: 'POST'})
+						    		.then(response => {
+								        if (!response.success) {
+								          throw new Error(response.message)
+								        }
+								        return response.message;
+								    }).catch(e => {
+						    			let dataExtra = "";
+						    			if (e.message != null && e.message != undefined){
+						    				dataExtra = e.message;
+						    			}
+						    			if (e.responseJSON != null && e.responseJSON != undefined){
+						    				dataExtra = e.responseJSON.message;
+						    			} 
+						    			Swal.close(); 
+						    			Swal.fire({title: "Error al realizar la acci&oacute;n de guardar",html:dataExtra, icon: 'error',confirmButtonText: 'Aceptar',confirmButtonColor: '#0d1b5c'}); 
+									});
+						}
+					}).then((result) => {
+
+						if (result.isConfirmed) {
+							Swal.fire({html: mensajeConfirmacion, icon: "success", confirmButtonText: 'Aceptar', confirmButtonColor: '#0d1b5c'}).then((result) => {
+								document.location.href = urlIndexSeguimientoTareas;
+							});
+						}
+
+						if (result.dismiss != null && result.dismiss != undefined) {
+							Swal.fire({html: "La operaci&oacute;n fue cancelada", icon: 'error', confirmButtonText: 'Aceptar', confirmButtonColor: '#0d1b5c'});
+						}
+
+					});
+				}
+
+			});
+
+			$(document).ready(function () {
+
+				/*DatePicker init*/
+				jQuery('.datepicker-initializer').datepicker({
+					format: "dd/mm/yyyy",
+					autoclose: true,
+					todayHighlight: true,
+					orientation: "bottom",
+					language: "es"
+				});
+
+
+			});
+
+		</script>
+	</section>
+</body>
+
+</html>

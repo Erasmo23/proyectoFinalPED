@@ -1,0 +1,280 @@
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{layouts/basic-layout}">
+
+<head>
+	<title>Nueva Tarea</title>
+	<style type="text/css">
+		label.error {
+			color: red !important;
+		}
+	</style>
+</head>
+
+<body>
+	<section layout:fragment="content" th:remove="tag">
+		<div class="container-fluid">
+			<div class="header">
+				<h1 class="header-title" th:inline="text" th:text="'Nueva Tarea'"></h1>
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/index}" th:inline="text" th:text="#{label.home}"></a>
+						</li>
+						<li class="breadcrumb-item" aria-current="page"><a th:href="@{/tareas/}" th:inline="text"
+								th:text="'Seguimiento de Tareas'"></a></li>
+						<li class="breadcrumb-item active" aria-current="page">Nueva Tarea</li>
+					</ol>
+				</nav>
+			</div>
+
+			<div class="row">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="text-body">Agregar Tarea</h3>
+							<hr class="m-t-0">
+						</div>
+
+						<form id="formTareas" class="needs-validation needs-validation-manual form-horizontal"
+							novalidate th:action="@{/tareas/save}" th:object="${tarea}" method="POST">
+							<input type="hidden" th:field="*{id}" />
+							<input type="hidden" id="fechaCreacion" th:field="*{fechaCreacion}">
+
+							<ul th:if="${#fields.hasErrors('global')}">
+								<li th:each="err : ${#fields.errors('global')}" th:text="${err}"></li>
+							</ul>
+
+							<div class="card-body">
+								<div class="row">
+									<div class="col-sm-12 col-lg-12">
+
+
+										<div class="form-group row mb-3">
+											<label for="ccPrioridad"
+												class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Prioridad</label>
+											<div class="col-xs-12 col-sm-10 col-md-10">
+												<select class="select2" id="ccPrioridad" th:field="*{ccPrioridad}"
+													required>
+													<option th:if="${tarea.ccPrioridad != null}"
+														th:value="${tarea.ccPrioridad.id}"
+														th:text="${tarea.ccPrioridad.descripcion}" selected="selected">
+													</option>
+												</select>
+												<div th:errors="*{ccPrioridad}" style="color: red;"></div>
+											</div>
+										</div>
+
+										<div class="form-group row mb-3">
+											<label for="ccEtiqueta"
+												class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Etiqueta</label>
+											<div class="col-xs-12 col-sm-10 col-md-10">
+												<select class="select2" id="ccEtiqueta" th:field="*{ccEtiqueta}"
+													required>
+													<option th:if="${tarea.ccEtiqueta != null}"
+														th:value="${tarea.ccEtiqueta.id}"
+														th:text="${tarea.ccEtiqueta.descripcion}" selected="selected">
+													</option>
+												</select>
+												<div th:errors="*{ccEtiqueta}" style="color: red;"></div>
+											</div>
+										</div>
+
+
+										<div class="form-group row mb-3">
+											<label for="titulo"
+												class="col-sm-2 text-right control-label col-form-label">T&Iacute;tulo</label>
+											<div class="col-sm-10">
+												<input type="text" class="form-control" id="titulo" name="titulo"
+													placeholder="Titulo" />
+											</div>
+										</div>
+
+
+										<div class="form-group row mb-3">
+											<label for="descripcion"
+												class="col-xs-12 col-sm-2 col-md-2 text-right control-label col-form-label">Descripci&oacute;n</label>
+											<div class="col-xs-12 col-sm-10 col-md-10">
+												<textarea class="form-control" rows="4" id="stDescripcion"
+													th:field="*{descripcion}" placeholder="Descripci&oacute;n"
+													maxlength="200" required></textarea>
+												<div th:uerrors="*{descripcion}" style="color: red;"></div>
+											</div>
+										</div>
+
+										<div class="form-group row mb-3">
+											<label for="fechaInicio"
+												class="col-sm-2 text-right control-label col-form-label">Fecha de
+												Inicio</label>
+											<div class="col-sm-10">
+												<div class="input-group date">
+													<div class="input-group">
+														<input type="text" class="form-control datepicker-initializer"
+															id="fechaInicio" name="fechaInicio" placeholder="DD/MM/YYYY"
+															required />
+														<span class="input-group-append">
+															<span class="input-group-text bg-light d-block">
+																<i class="fa fa-calendar"></i>
+															</span>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group row mb-3">
+											<label for="fechaFin"
+												class="col-sm-2 text-right control-label col-form-label">Fecha de
+												Fin</label>
+											<div class="col-sm-10">
+												<div class="input-group date">
+													<div class="input-group">
+														<input type="text" class="form-control datepicker-initializer"
+															id="fechaFin" name="fechaFin" placeholder="DD/MM/YYYY"
+															required />
+														<span class="input-group-append">
+															<span class="input-group-text bg-light d-block">
+																<i class="fa fa-calendar"></i>
+															</span>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="form-group m-b-0 text-center">
+									<button type="button" class="btn btn-info waves-effect waves-light"
+										th:text="#{action.save}" id="btnGuardarTarea"></button>
+
+									<a class="btn btn waves-effect waves-light btn-block btn-danger"
+										th:href="@{/tareas/}" th:inline="text">
+										Cancelar
+									</a>
+
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section layout:fragment="js" th:remove="tag">
+		<script th:inline="javascript">
+
+			const urlCboFilterS2AllPrioridad = /*[[@{/ccPrioridad/cboFilterS2Activos}]]*/"";
+			const urlCboFilterS2AllEtiqueta = /*[[@{/ccEtiqueta/cboFilterS2Activos}]]*/"";
+
+			const urlIndexSeguimientoTareas = /*[[@{/tareas/}]]*/"";
+
+			/*Select 2 init*/
+			renderSelect2('#ccPrioridad', urlCboFilterS2AllPrioridad, 5);
+			renderSelect2('#ccEtiqueta', urlCboFilterS2AllEtiqueta, 5);
+
+
+			$("#formTareas").validate({
+				errorClass: "is-invalid error",
+				validClass: "is-valid",
+				rules: {
+					titulo: {maxlength: 100, minlength: 5, required: true},
+					descripcion: {maxlength: 200, minlength: 5, required: true},
+					ccPrioridad: {required: true},
+					ccEtiqueta: {required: true},
+					fechaInicio: {required: true},
+					fechaFin: {required: true}
+				},
+				messages: {
+					titulo: {maxlength: $.validator.format("Por favor no ingrese m&aacute;s de {0} caracteres."), minlength: $.validator.format("Ingrese al menos {0} caracteres."), required: "Campo obligatorio."},
+					descripcion: {maxlength: $.validator.format("Por favor no ingrese m&aacute;s de {0} caracteres."), minlength: $.validator.format("Ingrese al menos {0} caracteres."), required: "Campo obligatorio."},
+					ccPrioridad: {required: "Campo obligatorio."},
+					ccEtiqueta: {required: "Campo obligatorio."},
+					fechaInicio: {required: "Campo obligatorio."},
+					fechaFin: {required: "Campo obligatorio."}
+				},
+				onfocusout: false,
+				invalidHandler: function (form, validator) {
+					let errors = validator.numberOfInvalids();
+					if (errors) {
+						validator.errorList[0].element.focus();
+					}
+				}
+			});
+
+			$('#btnGuardarTarea').click(function (event) {
+
+				let formulario = $('#formTareas');
+
+				let validacionJquery = formulario.valid();
+				if (!validacionJquery) {
+					formulario.removeClass("was-validated");
+				} else {
+					formulario.addClass('was-validated');
+					Swal.fire({
+						html: "&iquest;Est&aacute; seguro que desea a&ntilde;adir una nueva tarea?",
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#0d1b5c',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Aceptar',
+						cancelButtonText: 'Cancelar',
+						allowOutsideClick: false,
+						showLoaderOnConfirm: true,
+						preConfirm: () => {
+							return $.ajax({data: formulario.serialize(),url: formulario.attr("action"), type: 'POST'})
+						    		.then(response => {
+								        if (!response.success) {
+								          throw new Error(response.message)
+								        }
+								        return response.message;
+								    }).catch(e => {
+						    			let dataExtra = "";
+						    			if (e.message != null && e.message != undefined){
+						    				dataExtra = e.message;
+						    			}
+						    			if (e.responseJSON != null && e.responseJSON != undefined){
+						    				dataExtra = e.responseJSON.message;
+						    			} 
+						    			Swal.close(); 
+						    			Swal.fire({title: "Error al realizar la acci&oacute;n de guardar",html:dataExtra, icon: 'error',confirmButtonText: 'Aceptar',confirmButtonColor: '#0d1b5c'}); 
+									});
+						}
+					}).then((result) => {
+
+						if (result.isConfirmed) {
+							Swal.fire({html: "La Tarea fue a&ntilde;adida exitosamente.", icon: "success", confirmButtonText: 'Aceptar', confirmButtonColor: '#0d1b5c'}).then((result) => {
+								document.location.href = urlIndexSeguimientoTareas;
+							});
+						}
+
+						if (result.dismiss != null && result.dismiss != undefined) {
+							Swal.fire({html: "La operaci&oacute;n fue cancelada", icon: 'error', confirmButtonText: 'Aceptar', confirmButtonColor: '#0d1b5c'});
+						}
+
+					});
+				}
+
+			});
+
+			$(document).ready(function () {
+
+				/*DatePicker init*/
+				jQuery('.datepicker-initializer').datepicker({
+					format: "dd/mm/yyyy",
+					autoclose: true,
+					startDate: new Date(),
+					todayHighlight: true,
+					orientation: "bottom",
+					language: "es"
+				});
+
+
+			});
+
+		</script>
+	</section>
+</body>
+
+</html>

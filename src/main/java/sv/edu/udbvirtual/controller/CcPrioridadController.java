@@ -1,7 +1,10 @@
 package sv.edu.udbvirtual.controller;
 
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import jakarta.validation.Valid;
 import sv.edu.udbvirtual.commons.Constants;
+import sv.edu.udbvirtual.commons.S2;
+import sv.edu.udbvirtual.commons.S2Response;
+import sv.edu.udbvirtual.commons.S2Utils;
 import sv.edu.udbvirtual.commons.ServiceResponse;
 import sv.edu.udbvirtual.commons.ValidadorHttp;
 import sv.edu.udbvirtual.commons.datatables.mapping.DataTablesInput;
@@ -81,6 +88,28 @@ public class CcPrioridadController {
 	@PostMapping(value = { "/cambioEstado" })
 	public @ResponseBody ServiceResponse cambioEstado(@RequestParam(value = "id", required = false) Integer id) {
 		return ccPrioridadService.cambioEstado(id);
+	}
+	
+	@GetMapping(value = { "/cboFilterS2Activos" }, produces = Constants.APPLICATION_JSON)
+	public @ResponseBody S2Response<S2> cboFilterS2Activos(
+			@RequestParam(value = "q", required = false, defaultValue = "") String q,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "rows", required = false) Integer rows) {
+
+		Pageable pagina = PageRequest.of(page - 1, rows);
+		return S2Utils.procesarPeticion(() -> ccPrioridadService.getListActivosByDescripcion(q, pagina),
+				entrada -> new S2(entrada.getId().toString(), entrada.getDescripcion()), rows);
+	}
+	
+	@GetMapping(value = { "/cboFilterS2All" }, produces = Constants.APPLICATION_JSON)
+	public @ResponseBody S2Response<S2> cboFilterS2All(
+			@RequestParam(value = "q", required = false, defaultValue = "") String q,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "rows", required = false) Integer rows) {
+
+		Pageable pagina = PageRequest.of(page - 1, rows);
+		return S2Utils.procesarPeticion(() -> ccPrioridadService.getListByDescripcion(q, pagina),
+				entrada -> new S2(entrada.getId().toString(), entrada.getDescripcion()), rows);
 	}
 
 }

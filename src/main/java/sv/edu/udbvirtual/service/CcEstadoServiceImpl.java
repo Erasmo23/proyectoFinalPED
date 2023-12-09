@@ -2,6 +2,8 @@ package sv.edu.udbvirtual.service;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sv.edu.udbvirtual.commons.Constants;
@@ -41,5 +43,12 @@ public class CcEstadoServiceImpl implements CcEstadoService {
 	public DataTablesOutput<CcEstado> findAll(DataTablesInput input) {
 		return ccEstadoRepository.findAll(input);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Slice<CcEstado> getListByDescripcion(String query, Pageable page) {
+		return ccEstadoRepository.findByDescripcionLike(query, page);
+	}
+	
 
 }

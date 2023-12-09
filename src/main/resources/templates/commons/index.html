@@ -22,8 +22,7 @@
             </p>
         </div>
         
-        <!-- AGENTE -->
-        <th:block sec:authorize="hasAnyAuthority('AGENTE')">
+	   	<th:block >
 	        <div class="row">
 	            <div class="col-xl-12 col-xxl-12 d-flex">
 	                <div class="w-100">
@@ -33,22 +32,18 @@
 	                                <div class="card-body">
 	                                    <div class="row">
 	                                        <div class="col mt-0">
-	                                            <h5 class="card-title">Llamadas Atendidas Hoy</h5>
+	                                            <h5 class="card-title">Tareas en Estado <b>"Creada"</b></h5>
 	                                        </div>
 	
 	                                        <div class="col-auto">
 	                                            <div class="avatar">
 	                                                <div class="avatar-title rounded-circle bg-primary-dark">
-	                                                    <i class="align-middle" data-feather="phone-incoming"></i>
+	                                                    <i class="fas fa-check-square"></i>
 	                                                </div>
 	                                            </div>
 	                                        </div>
 	                                    </div>
-	                                    <h1 class="display-5 mt-1 mb-3" th:text="${contCallToday}"></h1>
-	                                    <div class="mb-0">
-	                                        <span class="text-danger"> <i
-	                                                class="mdi mdi-arrow-bottom-right"></i> Total de las Llamadas Atendidas Hoy </span>
-	                                    </div>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${countTareasCreadas}"></h1>
 	                                </div>
 	                            </div>
 	                        </div>
@@ -57,87 +52,7 @@
 	                                <div class="card-body">
 	                                    <div class="row">
 	                                        <div class="col mt-0">
-	                                            <h5 class="card-title">Consulta</h5>
-	                                        </div>
-	
-	                                        <div class="col-auto">
-	                                            <div class="avatar">
-	                                                <div class="avatar-title rounded-circle bg-primary-dark">
-	                                                    <i class="align-middle fas fa-question"></i>
-	                                                </div>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                    <h1 class="display-5 mt-1 mb-3" th:text="${contCallTodayCon}"></h1>
-	                                    <div class="mb-0">
-	                                        <span class="text-success"> <i
-	                                                class="mdi mdi-arrow-bottom-right"></i> Tipo de Tr&aacute;mite: Consulta </span>
-	                                    </div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                        <div class="col-sm-4">
-	                            <div class="card">
-	                                <div class="card-body">
-	                                    <div class="row">
-	                                        <div class="col mt-0">
-	                                            <h5 class="card-title">Operativo</h5>
-	                                        </div>
-	
-	                                        <div class="col-auto">
-	                                            <div class="avatar">
-	                                                <div class="avatar-title rounded-circle bg-primary-dark">
-	                                                    <i class="align-middle" data-feather="tool"></i>
-	                                                </div>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                    <h1 class="display-5 mt-1 mb-3" th:text="${contCallTodayOpe}"></h1>
-	                                    <div class="mb-0">
-	                                        <span class="text-success"> <i
-	                                                class="mdi mdi-arrow-bottom-right" ></i> Tipo de Tr&aacute;mite: Operativo </span>
-	                                    </div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-	   	</th:block>
-	   	
-	   	<!-- TECNICO -->
-	   	<th:block sec:authorize="hasAnyAuthority('ADMIN')">
-	        <div class="row">
-	            <div class="col-xl-12 col-xxl-12 d-flex">
-	                <div class="w-100">
-	                    <div class="row">
-	                        <div class="col-sm-4">
-	                            <div class="card">
-	                                <div class="card-body">
-	                                    <div class="row">
-	                                        <div class="col mt-0">
-	                                            <h5 class="card-title">Tarjeta 1</h5>
-	                                        </div>
-	
-	                                        <div class="col-auto">
-	                                            <div class="avatar">
-	                                                <div class="avatar-title rounded-circle bg-primary-dark">
-	                                                    <i class="align-middle" data-feather="layers"></i>
-	                                                </div>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                    <h1 class="display-5 mt-1 mb-3" th:text="${contAsignadas}"></h1>
-	                                </div>
-	                            </div>
-	                        </div>
-	                        <div class="col-sm-4">
-	                            <div class="card">
-	                                <div class="card-body">
-	                                    <div class="row">
-	                                        <div class="col mt-0">
-	                                            <h5 class="card-title">Tarjeta 2</h5>
+	                                            <h5 class="card-title">Tareas en Estado <b>"Iniciada"</b></h5>
 	                                        </div>
 	
 	                                        <div class="col-auto">
@@ -148,7 +63,7 @@
 	                                            </div>
 	                                        </div>
 	                                    </div>
-	                                    <h1 class="display-5 mt-1 mb-3" th:text="${countEnEjecucion}"></h1>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${countTareasIniciadas}"></h1>
 	                                </div>
 	                            </div>
 	                        </div>
@@ -157,19 +72,19 @@
 	                                <div class="card-body">
 	                                    <div class="row">
 	                                        <div class="col mt-0">
-	                                            <h5 class="card-title">Tarjeta 3</h5>
+	                                            <h5 class="card-title">Tareas en Estado <b>"En Proceso"</b></h5>
 	                                        </div>
 	
 	                                        <div class="col-auto">
 	                                            <div class="avatar">
 	                                                <div class="avatar-title rounded-circle bg-primary-dark">
-	                                                    <i class="align-middle" data-feather="pause"></i>
+	                                                   <i class="fas fa-tasks"></i>
 	                                                </div>
 	                                                 
 	                                            </div>
 	                                        </div>
 	                                    </div>
-	                                    <h1 class="display-5 mt-1 mb-3" th:text="${countEnEspera}"></h1>
+	                                    <h1 class="display-5 mt-1 mb-3" th:text="${countTareasEnProceso}"></h1>
 	                                   
 	                                </div>
 	                            </div>
@@ -178,6 +93,58 @@
 	                </div>
 	            </div>
 	        </div>
+	        
+	        <div class="row">
+	            <div class="col-xl-12 col-xxl-12 d-flex">
+	                <div class="w-100">
+	                    <div class="row">
+	                        <div class="col-sm-6">
+								
+								<div class="card text-center">
+								  <div class="card-header bg-warning text-dark">
+								    Tarea Proxima a finalizar que no ha sido iniciada
+								  </div>
+								  
+								  <div class="card-body" th:if="${tareaProximaIniciar}">
+								    <h5 class="card-title" th:text="${tareaProximaIniciar.titulo}"></h5>
+								    <p class="card-text" th:text = " 'Prioridad: ' + ${tareaProximaIniciar.ccPrioridad.descripcion} + ' - ' + ${tareaProximaIniciar.ccEtiqueta.descripcion} " ></p>
+								    <p class="card-text" th:text="${tareaProximaIniciar.descripcion}"></p>
+								    <a href="#" class="btn btn-primary">Iniciar Tarea</a>
+								  </div>
+								  
+								  <div class="card-body" th:if="${tareaProximaIniciar == null}">
+								    <p class="card-text" > Sin tarea en estado de Iniciada que se deba de tener en cuenta para colocarla en proceso.</p>
+								  </div>
+								  
+								</div>
+								
+	                        </div>
+	                        
+	                        <div class="col-sm-6">
+								<div class="card text-center">
+								  <div class="card-header bg-warning text-dark">
+								    Tarea Proxima a vencer en Estado <b>"En Proceso"</b>
+								  </div>
+								  
+								  <div class="card-body" th:if="${tareaProximaVencer}">
+								    <h5 class="card-title" th:text="${tareaProximaVencer.titulo}"></h5>
+								    <p class="card-text" th:text = " 'Prioridad: ' + ${tareaProximaVencer.ccPrioridad.descripcion} + ' - ' + ${tareaProximaVencer.ccEtiqueta.descripcion} " ></p>
+								    <p class="card-text" th:text="${tareaProximaVencer.descripcion}"></p>
+								    <a href="#" class="btn btn-primary">Finalizar Tarea</a>
+								  </div>
+								  
+								  <div class="card-body" th:if="${tareaProximaVencer == null}">
+								    <p class="card-text" > Sin tarea en estado de En proceso que se deba de tener cuidado de finalizar.</p>
+								  </div>
+								  
+								</div>
+								
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	        
 	   	</th:block>
       
  </th:block>

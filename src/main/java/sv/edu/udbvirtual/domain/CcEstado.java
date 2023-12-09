@@ -1,8 +1,6 @@
 package sv.edu.udbvirtual.domain;
 
 import java.io.Serializable;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.Basic;

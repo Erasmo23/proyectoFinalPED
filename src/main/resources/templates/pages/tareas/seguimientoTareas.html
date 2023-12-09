@@ -1,0 +1,332 @@
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/basic-layout}">
+<head>
+    <title th:inline="text" th:text="'Seguimiento de Tareas'"></title>
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+<div class="container-fluid">
+    <div class="header">
+        <h1 class="header-title" th:inline="text" th:text="'Seguimiento de Tareas'"></h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/index}" th:inline="text" th:text="#{label.home}"></a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:inline="text" th:text="'Seguimiento de Tareas'"></li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <th:block th:insert="fragments/service-response-painter" th:remove="tag"/>
+                    <div class="card-title col-lg-2">
+                        <a class="btn btn waves-effect waves-light btn-block btn-info" 
+                           th:href="@{/tareas/nuevaTarea}" th:inline="text">
+                            <i class="fa fa-plus-circle pr-1"></i> Nueva Tarea
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="tableTareas" class="table table-hover table-bordered" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Acciones</th>
+                                <th>Prioridad</th>
+                                <th>Etiqueta</th>
+                                <th>Titulo</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Estado</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <form id="formAddAvance" class="form-horizontal" novalidate th:action="@{/avances/agregar}" method="POST">
+        <input type="hidden" id="idTarea" name="idTarea" />
+        <input type="hidden" id="idAvance" name="idAvance" />
+    </form>
+    
+     <form id="formEditarTarea" class="form-horizontal" novalidate th:action="@{/tareas/editarTarea}" method="POST">
+        <input type="hidden" id="idTareaEditar" name="id" />
+    </form>
+    
+</div>
+
+
+<div id="modalAvances" class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" style="display: none;" >
+
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header modal-colored-header bg-info">
+                <h4 class="modal-title text-white" id="myLargeModalLabel">Avances Registrados de la Tarea</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">x</button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="col-sm-12 col-lg-12">
+                        
+
+                        <div class="form-group row">
+                            <div class="table-responsive">
+                                <div class="table-responsive">
+                                    <table id="tblAvancesTarea" class="table table-hover table-bordered" width="100%">
+                                        <thead>
+                                        <tr>
+                                        	<th></th>
+                                            <th>Descripci&oacute;n</th>
+                                            <th>Peso de Avance</th>
+                                            <th>Fecha de Realizaci&oacute;n</th>
+                                            <th>Fecha de Registro</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect text-left" data-bs-dismiss="modal" th:text="#{action.cancel}"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</section>
+
+<section layout:fragment="js" th:remove="tag">
+
+    <script th:inline="javascript">
+        const urlTareasDataTable = /*[[@{/tareas/list}]]*/"";
+        
+        const urlCboFilterS2AllPrioridad = /*[[@{/ccPrioridad/cboFilterS2All}]]*/"";
+		const urlCboFilterS2AllEtiqueta = /*[[@{/ccEtiqueta/cboFilterS2All}]]*/"";
+		const urlEstadoSelect2 = /*[[@{/ccEstado/cboFilterS2All}]]*/"";
+        
+        
+        const urlGetCcPrioridad = /*[[@{/ccPrioridad/form}]]*/"";
+        const urlCambioEstadoCcPrioridad = /*[[@{/ccPrioridad/cambioEstado}]]*/"";
+        
+        const urlIniciarTarea = /*[[@{/tareas/iniciarTarea}]]*/"";
+        
+        const urlFinalizarTarea = /*[[@{/tareas/finalizarTarea}]]*/"";
+        
+        const urlAvancesByTarea = /*[[@{/avances/list}]]*/"";
+        
+        //variable dinamica
+        let tareaSeleccionada;
+        
+    </script>
+    <script>
+        var table = $('table#tableTareas').DataTable({
+            ajax: urlTareasDataTable,
+            serverSide: true,
+            orderCellsTop: true,
+            fixedHeader: true,
+            columns: [
+                {
+                    targets: -1,
+                    data: null,
+                    searchable: false,
+                    orderable: false,
+                    width: "10%",
+                    render: function (data, type, row) {
+                    	
+                        let id = row.id;
+                        let divReturn = '<div class="button-group" style="display: inline-flex;">';
+							
+							
+						if (row.ccEstadoCodigoDelegate == "CREADA"){
+							divReturn +=  '<button title="Editar Tarea" class="btn waves-effect waves-light btn-success" type="button" onClick="formEditarTarea(' + id + ')" id="btnEditar_' + id + '" > <i class="fa fa-pencil-alt"></i></button>' ;
+							divReturn +=  '<button title="Iniciar" class="btn waves-effect waves-light btn-warning" type="button" onClick="ajaxIniciarTarea(' + id + ')" id="btnIniciar_' + id + '" > <i class="far fa-play-circle"></i></button>' ;
+						}
+						
+						
+						if (row.ccEstadoCodigoDelegate == "INICIADA"){
+							divReturn +=  '<button title="Agregar Avance" class="btn waves-effect waves-light btn-info" type="button" onClick="formAvanceTarea(' + id + ')" id="btnAgregarAvance_' + id + '" > <i class="fas fa-plus-circle"></i></button>' ;
+						}
+						
+						if (row.ccEstadoCodigoDelegate == "EN_PROCESO"){
+							divReturn +=  '<button title="Agregar Avance" class="btn waves-effect waves-light btn-info" type="button" onClick="formAvanceTarea(' + id + ')" id="btnAgregarAvance_' + id + '" > <i class="fas fa-plus-circle"></i></button>' ;
+							divReturn +=  '<button title="Finalizar" class="btn waves-effect waves-light btn-danger" type="button" onClick="ajaxFinalizarTarea(' + id + ')" id="btnFinalizar_' + id + '" > <i class="fas fa-calendar-check"></i></button>' ;
+							divReturn +=  '<button title="Ver Avances" class="btn waves-effect waves-light btn-primary" type="button" onClick="modalAvancesByTarea(' + id + ')" id="btnconsultarAvancesModal_' + id + '" > <i class="fas fa-search"></i></button>' ;
+						}
+						
+						if (row.ccEstadoCodigoDelegate == "FINA" || row.ccEstadoCodigoDelegate == "FINA_INCO"){
+							divReturn +=  '<button title="Ver Avances" class="btn waves-effect waves-light btn-primary" type="button" onClick="modalAvancesByTarea(' + id + ')" id="btnconsultarAvancesModal_' + id + '" > <i class="fas fa-search"></i></button>' ;
+						}
+                        
+                        return divReturn +='</div>';
+                    }
+                }
+                ,
+                {data: 'ccPrioridad.id', orderable: false,orderable: false,filterType: "select2",filterUrl: urlCboFilterS2AllPrioridad,
+                	render: function (data, type, row) {
+                		return row.ccPrioridadDescripcionDelegate;
+                    }
+                }
+                ,
+                {data: 'ccEtiqueta.id', orderable: false,orderable: false,filterType: "select2",filterUrl: urlCboFilterS2AllEtiqueta,
+                	render: function (data, type, row) {
+                		return row.ccEtiquetaDescripcionDelegate;
+                    }
+                }
+                ,  
+                {
+                    data: 'titulo'
+                    , orderable: false
+                }
+                , {
+                    data: 'fechaInicio'
+                    , orderable: false
+                    , filterType: "date"
+                },
+                {
+                    data: 'fechaFin'
+                    , orderable: false
+                    , filterType: "date"
+                }
+                , {data: 'ccEstado.id', orderable: false,orderable: false,filterType: "select2",filterUrl: urlEstadoSelect2,
+                	render: function (data, type, row) {
+                		return row.ccEstadoDescripcionDelegate;
+                    }
+                  }
+            ]
+        });
+
+        crearFiltrosDataTable("#tableTareas", table);
+        
+        function formEditarTarea(id){
+			$("#idTareaEditar").val(id);
+        	$("#formEditarTarea").submit();
+		}
+        
+        function formAvanceTarea(id){
+        	$("#idTarea").val(id);
+        	$("#formAddAvance").submit();
+        }
+        
+        function editAvanceTarea(idAvance){
+        	$("#idAvance").val(idAvance);
+        	$("#formAddAvance").submit();
+        }
+
+        function ajaxIniciarTarea(id){
+            Swal.fire({
+                title: '\u00BFEst\u00E1 seguro, ya no se podra editar la tarea?',
+                html: "Se iniciara la tarea seleccionada",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'S&iacute;',
+                cancelButtonText: 'No'
+            }).then(function(e) {
+                if (e.isConfirmed) {
+                    $.ajax({
+                        data: {id} ,
+                        url: urlIniciarTarea,
+                        type: 'POST',
+                        success: function (result) {
+                            if (result.success) {
+                                Swal.fire({title: "Iniciada!!!", text: result.message, icon:'success'});
+                                $('#tableTareas').DataTable().ajax.reload();
+                            } else {
+                                Swal.fire({title: "\u00A1Error!", text: result.message, icon:'error'});
+                            }
+                        },
+                        error: function (x, e,  thrownError) {
+                            Swal.fire({title: "\u00A1Error!", text: "Error interno del servidor.", type:'error'});
+                        }
+                    });
+                }
+            });
+        }
+        
+        
+        function ajaxFinalizarTarea(id){
+            Swal.fire({
+                title: '\u00BFEst\u00E1 seguro, ya no se podra realizar ninguna accion sobre la tarea?',
+                html: "Se finalizara la tarea seleccionada",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'S&iacute;',
+                cancelButtonText: 'No'
+            }).then(function(e) {
+                if (e.isConfirmed) {
+                    $.ajax({
+                        data: {id} ,
+                        url: urlFinalizarTarea,
+                        type: 'POST',
+                        success: function (result) {
+                            if (result.success) {
+                                Swal.fire({title: "Finalizada!!!", text: result.message, icon:'success'});
+                                $('#tableTareas').DataTable().ajax.reload();
+                            } else {
+                                Swal.fire({title: "\u00A1Error!", text: result.message, icon:'error'});
+                            }
+                        },
+                        error: function (x, e,  thrownError) {
+                            Swal.fire({title: "\u00A1Error!", text: "Error interno del servidor.", type:'error'});
+                        }
+                    });
+                }
+            });
+        }
+        
+        
+        function modalAvancesByTarea(idTarea){
+			tareaSeleccionada = idTarea;
+			$('#tblAvancesTarea').DataTable().ajax.reload();
+	    	$('#modalAvances').modal('toggle');
+		}
+        
+        let tableAvancesByTarea = $('table#tblAvancesTarea').DataTable({
+			ajax: {
+				url: urlAvancesByTarea,
+	            type: 'get',
+	            data: function (d) {
+					d.idTarea = tareaSeleccionada;
+				}
+			},
+			serverSide: true,
+			orderCellsTop: true,
+			fixedHeader: true,
+			columns: [
+				{
+                    targets: -1,
+                    data: null,
+                    searchable: false,
+                    orderable: false,
+                    width: "10%",
+                    render: function (data, type, row) {
+                        let id = row.id;
+                        let divReturn = '<div class="button-group" style="display: inline-flex;">';
+						if (row.tareaEstadoDelegate != "FINA" && row.tareaEstadoDelegate != "FINA_INCO"){
+							divReturn +=  '<button title="Editar" class="btn waves-effect waves-light btn-success" type="button" onClick="editAvanceTarea(' + id + ')" id="btnEditar_' + id + '" > <i class="fa fa-pencil-alt"></i></button>' ;
+						}
+                        return divReturn +='</div>';
+                    }
+                },
+				{data: 'descripcion',orderable: false},
+				{data: 'pesoAvance',orderable: false,searchable: false},
+				{data: 'fechaVencimiento',orderable: false,searchable: false},
+				{data: 'fechaCreacion',orderable: false,searchable: false}
+			]
+	        });
+        
+        
+    </script>
+</section>
+</body>
+</html>
