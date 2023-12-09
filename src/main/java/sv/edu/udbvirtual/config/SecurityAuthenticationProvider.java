@@ -57,7 +57,7 @@ public class SecurityAuthenticationProvider implements AuthenticationProvider {
 			SecurityUserDetails user = dbAuthentication(username);
 			return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
 		} else {
-			throw new BadCredentialsException("Direcci&oacute;n de correo electr&oacute;nico o contrase&ntilde;a incorrectos.");
+			throw new BadCredentialsException("Dirección de correo electrónico o contraseña incorrectos.");
 		}
 	}
 
