@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -130,6 +131,13 @@ public class TareasServiceImpl implements TareasService {
 		tareasRepository.updateEstado(ccEstado, LocalDate.now(), id);
 		
 		return new ServiceResponse(Boolean.TRUE, "La Tarea fue Finalizada exitosamente.");
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public void cargarListasTareas(Model model) {
+		model.addAttribute("listaTareasPorFecha", tareasRepository.findByUsuarioOrderByFechaFin(SecurityHelper.getLoggedInUserDetails().getIdUsuario()));
+		model.addAttribute("listaTareasPorPrioridad", tareasRepository.findByUsuarioOrderByPrioridad(SecurityHelper.getLoggedInUserDetails().getIdUsuario()));
 	}
 
 }

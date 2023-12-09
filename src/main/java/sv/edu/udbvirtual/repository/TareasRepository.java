@@ -1,6 +1,7 @@
 package sv.edu.udbvirtual.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,5 +26,11 @@ public interface TareasRepository extends DataTablesRepository<Tarea, Integer> {
 	@Modifying
 	@Query("UPDATE Tarea t SET t.ccEstado=:estado, t.fechaActualizacion=:now WHERE t.id=:id")
 	void updateEstado(CcEstado estado, LocalDate now, Integer id);
+
+	@Query("SELECT t FROM Tarea t WHERE t.secUsuario.id =:idUsuario AND t.ccEstado.codigo NOT IN ('FINA','FINA_INCO') ORDER BY t.fechaFin ASC")
+	List<Tarea> findByUsuarioOrderByFechaFin(Integer idUsuario);
+
+	@Query("SELECT t FROM Tarea t WHERE t.secUsuario.id =:idUsuario AND t.ccEstado.codigo NOT IN ('FINA','FINA_INCO') ORDER BY t.ccPrioridad.orden DESC, t.fechaFin ASC")
+	List<Tarea> findByUsuarioOrderByPrioridad(Integer idUsuario);
 
 }

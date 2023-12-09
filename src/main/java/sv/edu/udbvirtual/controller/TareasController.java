@@ -92,7 +92,6 @@ public class TareasController {
 		return transformerMessageValidation.getServiceResponseError(bdResult);
 	}
 	
-	
 	@PostMapping("/iniciarTarea")
 	public @ResponseBody ServiceResponse iniciarTarea(@RequestParam(value = "id", required = false) final Integer id) {
 		return tareasService.iniciarTarea(id);
@@ -101,5 +100,11 @@ public class TareasController {
 	@PostMapping("/finalizarTarea")
 	public @ResponseBody ServiceResponse finalizarTarea(@RequestParam(value = "id", required = false) final Integer id) {
 		return tareasService.finalizarTarea(id);
+	}
+	
+	@GetMapping("/guia")
+	public String guiaTareas(Model model) {
+		tareasService.cargarListasTareas(model);
+		return "pages/tareas/guia";
 	}
 }

@@ -2,6 +2,7 @@ package sv.edu.udbvirtual.domain;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -154,4 +155,8 @@ public class Tarea {
 	public String getFechaCreacionFormateada() {
     	return this.fechaCreacion != null ? this.fechaCreacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
     }
+	
+	public long getDiasRestantesFechaFinalizacion() {
+		return this.fechaFin != null ? ChronoUnit.DAYS.between(LocalDate.now(), this.fechaFin)  : null;
+	}
 }

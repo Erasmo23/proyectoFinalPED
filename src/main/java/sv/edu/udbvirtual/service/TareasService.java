@@ -2,6 +2,7 @@ package sv.edu.udbvirtual.service;
 
 import java.util.Optional;
 
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
 import sv.edu.udbvirtual.commons.ServiceResponse;
@@ -22,5 +23,7 @@ public interface TareasService {
 	ServiceResponse iniciarTarea(final Integer id);
 
 	ServiceResponse finalizarTarea(final Integer id);
+
+	void cargarListasTareas(Model model);
 	
 }

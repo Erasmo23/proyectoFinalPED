@@ -1,0 +1,101 @@
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/basic-layout}">
+<head>
+    <title th:inline="text" th:text="'Guia de Realizaci&oacute;n de Tareas'"></title>
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+<div class="container-fluid">
+    <div class="header">
+        <h1 class="header-title" th:inline="text" th:text="'Guia de Realizaci&oacute;n de Tareas'"></h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/index}" th:inline="text" th:text="#{label.home}"></a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:inline="text" th:text="'Guia de Realizaci&oacute;n de Tareas'"></li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    
+                    <div class="row mb-3 border border-warning border-3 rounded-3 pb-3">
+						<h4 class="bg-warning text-dark">Tareas por orden de fecha de finalizacion mas pronta.</h4>
+						
+						<div class="col-4">
+						 	<div class="list-group" id="list-tab-tareas-fecha" role="tablist">
+								 
+								 <a class="list-group-item list-group-item-action" data-bs-toggle="list" role="tab" 
+								 		th:each="tarea : ${listaTareasPorFecha}" th:text="${tarea.titulo}" 
+								 		th:id="'list-tarea-fecha-' + ${tarea.id}" th:href="'#tarea-fecha-' + ${tarea.id}"
+								 		th:aria-controls="'list-tarea-fecha' + ${tarea.id}"
+								 		></a>
+						    </div>
+						</div>
+						<div class="col-8">
+						    <div class="tab-content" id="nav-tabContent-tareas-fecha">
+								
+								<div class="tab-pane fade" role="tabpanel" th:each="tarea : ${listaTareasPorFecha}"
+									th:id="'tarea-fecha-' + ${tarea.id}" th:aria-labelledby="'list-tarea-fecha-' + ${tarea.id}"
+									>
+									<h5 th:text="'Prioridad: ' + ${tarea.ccPrioridad.descripcion} + ' / Etiqueta' + ${tarea.ccEtiqueta.descripcion}"></h5>
+									<h6 th:text="'Dias Restantes: ' + ${tarea.diasRestantesFechaFinalizacion}"></h6>
+									<p th:text="${tarea.descripcion}"></p>
+									<p th:text="'Fecha de Inicio:' + ${tarea.fechaInicioFormateada}"></p>
+									<p th:text="'Fecha de Fin:' + ${tarea.fechaFinFormateada}"></p>
+									<p th:text="'Fecha de Ingreso:' + ${tarea.fechaCreacionFormateada}"></p>
+								</div>
+						      
+						    </div>
+						</div>
+						
+					</div>
+					
+					<div class="row border border-warning border-3 rounded-3 pb-3">
+						<h4 class="bg-warning text-dark">Tareas por Prioridad y fecha de finalizacion mas pronta.</h4>
+						
+					  <div class="col-4">
+					    <div class="list-group" id="list-tab2" role="tablist">
+							
+					      <a class="list-group-item list-group-item-action" data-bs-toggle="list" role="tab" 
+								 		th:each="tarea : ${listaTareasPorPrioridad}" th:text="${tarea.titulo}" 
+								 		th:id="'list-tarea-prioridad-' + ${tarea.id}" th:href="'#tarea-prioridad-' + ${tarea.id}"
+								 		th:aria-controls="'list-tarea-prioridad' + ${tarea.id}"
+								 		></a>
+					    </div>
+					  </div>
+					  <div class="col-8">
+					    <div class="tab-content" id="nav-tabContent2">
+					      
+					      <div class="tab-pane fade" role="tabpanel" th:each="tarea : ${listaTareasPorPrioridad}"
+									th:id="'tarea-prioridad-' + ${tarea.id}" th:aria-labelledby="'list-tarea-prioridad-' + ${tarea.id}"
+									>
+									<h5 th:text="'Prioridad: ' + ${tarea.ccPrioridad.descripcion} + ' / Etiqueta' + ${tarea.ccEtiqueta.descripcion}"></h5>
+									<h6 th:text="'Dias Restantes: ' + ${tarea.diasRestantesFechaFinalizacion}"></h6>
+									<p th:text="${tarea.descripcion}"></p>
+									<p th:text="'Fecha de Inicio:' + ${tarea.fechaInicioFormateada}"></p>
+									<p th:text="'Fecha de Fin:' + ${tarea.fechaFinFormateada}"></p>
+									<p th:text="'Fecha de Ingreso:' + ${tarea.fechaCreacionFormateada}"></p>
+								</div>
+					      
+					    </div>
+					  </div>
+					</div>
+                   
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section layout:fragment="js" th:remove="tag">
+
+    <script th:inline="javascript">
+       
+    </script>
+</section>
+</body>
+</html>
